@@ -1,0 +1,20 @@
+﻿################################################################################
+# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Api/bin/Debug
+/Application/bin/Debug
+/Application/obj
+/Application/Application.csproj.user
+/DataAccess/bin/Debug
+/DataAccess/obj/Debug
+/DataAccess/obj
+/Domain/bin/Debug
+/Domain/obj
+/Proxy/bin/Debug
+/Proxy/obj
+/Utility/bin/Debug
+/Utility/obj
+/Api/obj
+*.user
