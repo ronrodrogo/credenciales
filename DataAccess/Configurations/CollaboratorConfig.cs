@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.Configurations
 {
-    public class ComplaintConfig: IEntityTypeConfiguration<Complaint>
+    public class CollaboratorConfig: IEntityTypeConfiguration<Collaborator>
     {
-        public void Configure(EntityTypeBuilder<Complaint> builder)
+        public void Configure(EntityTypeBuilder<Collaborator> builder)
         {
             //Table Name
-            builder.ToTable("Complaints");
+            builder.ToTable("Collaborators");
             
             //Primary Key
             builder.Property<int>("Id")
@@ -17,10 +17,9 @@ namespace DataAccess.Configurations
                 .HasColumnType("int")
                 .UseIdentityColumn();
 
-            //Other Columns
-            builder.HasOne(x => x.Complainant);
-            builder.HasMany(x => x.ComplaintInvolved);
-            builder.HasMany(x => x.ComplaintReasons);
+            //Other Columns           
+            builder.HasOne(x => x.Area);
+            builder.HasOne(x => x.Leadership);
             builder.HasMany(x => x.Attachments);
            
 

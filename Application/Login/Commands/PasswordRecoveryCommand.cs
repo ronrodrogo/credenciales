@@ -47,7 +47,7 @@ public class PasswordRecoveryCommandHandler : IRequestHandler<PasswordRecoveryCo
         try
         {
             var user = _repository.GetAllActive()
-                 .FirstOrDefault(x => x.UserName == command.Username);
+                 .FirstOrDefault(x => x.Email == command.Username);
 
             if (user is not null)
             {
@@ -62,7 +62,7 @@ public class PasswordRecoveryCommandHandler : IRequestHandler<PasswordRecoveryCo
                 {
                     Subject = "Recuperar contraseña",
                     Body = $"Tu contraseña temporal es: {tempPass}",
-                    ToEmail = user.ContactEmail
+                    ToEmail = user.Email
                 });
             }
              

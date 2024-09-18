@@ -47,7 +47,7 @@ public class GetUserByLoginQueryHandler : IRequestHandler<GetUserByLoginQuery, R
         try
         {
             var user = _repository.GetAllActive()
-                 .Where(x => x.UserName == command.Username)
+                 .Where(x => x.Email == command.Username)
                  .ProjectTo<UserLoginDto>(_mapper.ConfigurationProvider)
                  .FirstOrDefault();
 

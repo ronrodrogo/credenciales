@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.Configurations
 {
-    public class ComplaintTypeConfig : IEntityTypeConfiguration<ComplaintType>
+    public class LeadershipConfig : IEntityTypeConfiguration<Leadership>
     {
-        public void Configure(EntityTypeBuilder<ComplaintType> builder)
+        public void Configure(EntityTypeBuilder<Leadership> builder)
         {
             //Table Name
-            builder.ToTable("ComplaintTypes");
+            builder.ToTable("Leadership");
             
             //Primary Key
             builder.Property<int>("Id")
@@ -18,7 +18,8 @@ namespace DataAccess.Configurations
                 .UseIdentityColumn();
 
             //Other Columns
-           
+         
+
         }
     }
 }

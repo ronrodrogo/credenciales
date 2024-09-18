@@ -78,8 +78,7 @@ namespace Api.JwtConfig
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Names),
-                    new Claim("LastName", user.LastName),
+                    new Claim(ClaimTypes.Name, user.Collaborator.CompleteName),
                     new Claim(ClaimTypes.Role, user.EUserType.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(30),

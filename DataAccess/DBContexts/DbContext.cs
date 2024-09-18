@@ -20,13 +20,11 @@ namespace DataAccess.DBContexts
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Complaint> Complaints { get; set; }
-        public DbSet<Attachment> Attachtments { get; set; }
-        public DbSet<ComplaintInvolved>  Involveds { get; set; }
-        public DbSet<ComplaintReasons>  ComplaintReasons { get; set; }
-        public DbSet<ComplaintType>  Reasons { get; set; }
+        public DbSet<Area> Areas { get; set; }
+        public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<Collaborator>  Collaborators { get; set; }
+        public DbSet<Leadership>  leaderships { get; set; }
         public DbSet<User>  People { get; set; }
-        public DbSet<Chat>  Chat { get; set; }
        
         
     }

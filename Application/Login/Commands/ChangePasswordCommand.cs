@@ -41,7 +41,7 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
         try
         {
             var user = _repository.GetAllActive()
-                 .FirstOrDefault(x => x.UserName == command.Username);
+                 .FirstOrDefault(x => x.Email == command.Username);
 
             if (user is not null && _passwordHasher.VerifyPassword(command.OldPassword, user?.Password))
             {

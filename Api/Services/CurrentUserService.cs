@@ -60,7 +60,7 @@ public class CurrentUserService : ICurrentUserService
     private string ClaimsId { get; }
     public string Token { get; }
     public string UserEmail { get; }
-    public EUserType EUserType { get; }
+    public ERoleUser EUserType { get; }
     public int BranchId { get; }
     public string FirstName { get; }
     public string LastName { get; }
