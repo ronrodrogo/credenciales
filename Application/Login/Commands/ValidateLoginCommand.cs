@@ -46,6 +46,8 @@ public class ValidateLoginCommandHandler : IRequestHandler<ValidateLoginCommand,
         Response<UserLoginDto> result = new();
         try
         {
+            var pass = _passwordHasher.HashPassword(command.Password);
+
             var user = _repository.GetAllActive()
                  .Where(x => x.Email == command.Username)
                  .ProjectTo<UserLoginDto>(_mapper.ConfigurationProvider)

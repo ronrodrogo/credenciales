@@ -25,14 +25,15 @@ CREATE TABLE dbo.Leadership (
 CREATE TABLE dbo.Collaborators (
     RUT VARCHAR(50)  NULL,
     CompleteName VARCHAR(250)  NULL,
-	AreaId int not NULL,
+	--AreaId int not NULL,
+	Area varchar(200) not NULL,
 	LeadershipId int not NULL,
 	Position VARCHAR(180) NULL,
 	ECollaboratorStatus INT not NULL,
 	Phone VARCHAR(20) NULL,
 	Email VARCHAR(200) NULL,
 	Active bit NOT NULL
-    FOREIGN KEY (AreaId) REFERENCES Areas(Id),
+    --FOREIGN KEY (AreaId) REFERENCES Areas(Id),
     FOREIGN KEY (LeadershipId) REFERENCES Leadership(Id)
 );
 
