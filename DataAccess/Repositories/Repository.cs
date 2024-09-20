@@ -97,12 +97,12 @@ namespace DataAccess.Repositories
             DbContext.AddRange(entities);
         }
 
-        public virtual async void AddRangComplaintync(T[] entities)
+        public virtual async void AddRangeSync(T[] entities)
         {
             await DbContext.AddRangeAsync(entities);
         }
 
-        public virtual void DeleteRangComplaintync(T[] entities)
+        public virtual void DeleteRangeSync(T[] entities)
         {
              DbContext.RemoveRange(entities);
         }
@@ -130,7 +130,7 @@ namespace DataAccess.Repositories
         }
 
         // DELETE
-        public virtual async Task DeletComplaintync(int id)
+        public virtual async Task DeleteSync(int id)
         {
             var entity = await this.GetByIdAsync(id);
 
@@ -145,7 +145,7 @@ namespace DataAccess.Repositories
             dbEntityEntry.State = EntityState.Deleted;
         }
 
-        public virtual async void DeactivatComplaintync(int id)
+        public virtual async void DeactivateSync(int id)
         {
             var entity = await GetByIdAsync(id);
 
@@ -178,7 +178,7 @@ namespace DataAccess.Repositories
         }
 
         // SAVE
-        public async Task<bool> SavComplaintync(CancellationToken cancellationToken)
+        public async Task<bool> SaveSync(CancellationToken cancellationToken)
         {
             return (await DbContext.SaveChangesAsync(cancellationToken)) > 0;
         }
