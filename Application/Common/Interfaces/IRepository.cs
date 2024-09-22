@@ -20,16 +20,16 @@ namespace Application.Common.Interfaces
         T Add(T entity);
         void AddRange(List<T> entities);
         void AddAsync(T entity);
-        void AddRangComplaintync(T[] entities);
+        void AddRangeSync(T[] entities);
         void Update(T entity);
-        Task DeletComplaintync(int id);
-        void DeleteRangComplaintync(T[] entities);
-        void DeactivatComplaintync(int id);
+        Task DeleteSync(int id);
+        void DeleteRangeSync(T[] entities);
+        void DeactivateSync(int id);
         void Deactivate(T entity);
         Task<T> GetByIdAsync(int id); 
         Task<T> GetByIdAsync(string id);
         bool Save();
-        Task<bool> SavComplaintync(CancellationToken cancellationToken);
+        Task<bool> SaveSync(CancellationToken cancellationToken);
         Task<List<T>> ToListAsync();
 
         List<Dictionary<string, object>> ExecuteReaderDictionary(string command);
