@@ -1,0 +1,67 @@
+<body>
+<div class="table-container">
+
+  <div class="toolbar">
+    <h1 class="title">Mantenedores / Colaboradores</h1>
+    <button class="btn btn-primary">Nuevo Colaborador</button>
+    <button class="btn btn-secondary">Re-imprimir</button>
+  </div>
+
+  <input type="text" placeholder="Buscar por Nombre, RUT, Correo electrónico..." class="search-bar" />
+
+  <div class="table-wrapper">
+    <table class="table">
+      <thead>
+        <tr>
+          <th><input type="checkbox"></th>
+          <th>Nombre completo</th>
+          <th>RUT</th>
+          <th>Área / Centro de Coste</th>
+          <th>Jefatura</th>
+          <th>Cargo</th>
+          <th>Celular</th>
+          <th>Correo</th>
+          <th>Estado</th>
+          <th>Adjuntos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let colaborador of paginatedColaboradores">
+          <td><input type="checkbox"></td>
+          <td>{{ colaborador.nombre }}</td>
+          <td>{{ colaborador.rut }}</td>
+          <td>{{ colaborador.area }}</td>
+          <td>{{ colaborador.jefatura }}</td>
+          <td>{{ colaborador.cargo }}</td>
+          <td>{{ colaborador.celular }}</td>
+          <td>{{ colaborador.correo }}</td>
+          <td [ngClass]="colaborador.estado === 'Fijo' ? 'estado-fijo' : 'estado-temporal'">{{ colaborador.estado }}</td>
+          <td>
+            <img src="foto-icon.png" alt="Foto" />
+            <img src="firma-icon.png" alt="Firma" />
+            <img src="credencial-icon.png" alt="Credencial" />
+          </td>
+          <td>
+            <button class="btn-edit">Editar</button>
+            <button class="btn-delete">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <span class="label">Principio</span>
+    <span (click)="previousPage()" [class.disabled]="currentPage === 1" class="arrow">‹</span>
+    
+    <div class="page-numbers">
+      <button *ngFor="let page of pages()" (click)="goToPage(page)" [class.active]="currentPage === page">
+        {{ page }}
+      </button>
+    </div>
+    
+    <span (click)="nextPage()" [class.disabled]="currentPage === totalPages" class="arrow">›</span>
+    <span class="label">Final</span>
+  </div>
+  </div>
+</body>
