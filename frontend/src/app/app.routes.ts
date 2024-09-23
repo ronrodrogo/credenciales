@@ -12,4 +12,5 @@ export const routes: Routes = [
     {path: 'colaboradores', component: ColaboradoresComponent},
     {path: 'areas', component: AreasComponent},
     {path: 'jefaturas', component: JefaturasComponent},
+    { path: '**', redirectTo: '' } 
 ];
