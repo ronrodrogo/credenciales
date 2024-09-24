@@ -8,7 +8,8 @@ body {
   font-family: "Open Sans", sans-serif;
   font-size: small;
   overflow-y: auto;
-
+  text-decoration: none;
+  color: inherit;
 }
 .table-container {
   margin: 20px;
@@ -16,7 +17,6 @@ body {
 .title{
   font-size: x-large;
   font-family: "Inria Sans", sans-serif;
-
 }
 
 .table tbody tr:nth-child(odd) {
