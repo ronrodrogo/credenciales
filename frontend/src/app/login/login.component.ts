@@ -27,14 +27,15 @@ export class LoginComponent {
       password: this.usuario.password
     };
 
-    this.http.post<{ token: string }>(`${environment.apiUrl}/auth/login`, loginCommand)
-      .subscribe(response => {
-        localStorage.setItem('token', response.token); 
-        console.log('Inicio de sesión exitoso');
-        this.router.navigate(['/home']);
-      }, error => {
-        this.mensajeError = 'Correo electrónico o contraseña incorrectos';
-        console.error(error);
-      });
+    this.router.navigate(['/home']);
+    // this.http.post<{ token: string }>(`https://localhost:44394/api/auth/login`, loginCommand)
+    //   .subscribe(response => {
+    //     localStorage.setItem('token', response.token); 
+    //     console.log('Inicio de sesión exitoso');
+    //     this.router.navigate(['/home']);
+    //   }, error => {
+    //     this.mensajeError = 'Correo electrónico o contraseña incorrectos';
+    //     console.error(error);
+    //   });
   }
 }
