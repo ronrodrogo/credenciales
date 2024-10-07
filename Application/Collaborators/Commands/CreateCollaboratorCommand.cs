@@ -58,8 +58,11 @@ public class CreateCollaboratorCommandHandler
                 Active = true
             };
 
-            _repository.Add(collaborator);
-            _repository.Save();
+            //_repository.Add(collaborator);
+            //_repository.Save();
+
+            //if(request.Photo != null)
+            //    _mediator.Send(new AddAttachmentsCommand { CollaboratorId = collaborator.Id, AttachmentType = EAttachmentType.Photo, Attachment = request.Photo });
 
             if (request.Photo != null)
                 _mediator.Send(new AddAttachmentsCommand { CollaboratorId = collaborator.Id, AttachmentType = EAttachmentType.Photo, Attachment = request.Photo });

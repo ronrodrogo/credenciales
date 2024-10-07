@@ -17,6 +17,7 @@ public static class Templates
         try
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), templatePath, fileName);
+            //var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, templatePath, fileName);
             var template = await File.ReadAllTextAsync(filePath);
            
             foreach (var (key, value) in @params)
