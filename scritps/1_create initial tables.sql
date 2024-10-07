@@ -2,7 +2,6 @@
 CREATE TABLE dbo.Attachments (
     Id INT PRIMARY KEY IDENTITY(1,1),
 	CollaboratorIdId int not null,
-    FileBase64 VARCHAR(MAX) NOT NULL,
     FileName VARCHAR(50) NOT NULL,
     Description VARCHAR(150) NOT NULL,
 	EAttachmentType int not null,
@@ -12,7 +11,7 @@ CREATE TABLE dbo.Attachments (
 CREATE TABLE dbo.Leadership --gerencia(
     Id INT PRIMARY KEY IDENTITY(1,1),
     Name VARCHAR(150) NOT NULL,
-	Description VARCHAR(150) NULL,
+	Active bit NULL,
 );
 
 
@@ -43,11 +42,11 @@ CREATE TABLE dbo.Users (
 
 CREATE TABLE dbo.Segment (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    Name VARCHAR(150) NOT NULL,
+    Color VARCHAR(150) NOT NULL,
 	Description VARCHAR(150) NULL,
 );
 
 
-alter table dbo.Collaborators add segmentId int not null;
-alter table dbo.Collaborators add FOREIGN KEY (segmentId) REFERENCES Segment(Id)
+alter table dbo.Collaborators add SegmentId int not null;
+alter table dbo.Collaborators add FOREIGN KEY (SegmentId) REFERENCES Segment(Id)
 

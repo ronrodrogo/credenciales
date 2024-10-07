@@ -1,5 +1,4 @@
-﻿using Application.Attachments.Commands;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using ClosedXML.Excel;
 using Domain.Entities;
 using Domain.Enums;
@@ -10,20 +9,19 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Utility.APIResponseHandlers.Wrappers;
 using Utility.DTOs;
 
-namespace Application.Collaborators.Commands;
+namespace Application.Segments.Commands;
 
-public record CreateMasiveCollaboratorCommand : IRequest<Response<MassiveDataDto>>
+public record CreateMasiveSegmentCommand : IRequest<Response<MassiveDataDto>>
 {
     public IFormFile FileData { get; init; }
 }
 
-public class CreateMasiveCollaboratorCommandHandler
+public class CreateMasiveSegmentCommandHandler
     (
         IRepository<Collaborator> _repository,
         IRepository<Leadership> _repoLeadership,
@@ -32,9 +30,9 @@ public class CreateMasiveCollaboratorCommandHandler
         IConfiguration  _configuration,
         IMediator _mediator
     )
-    : IRequestHandler<CreateMasiveCollaboratorCommand, Response<MassiveDataDto>>
+    : IRequestHandler<CreateMasiveSegmentCommand, Response<MassiveDataDto>>
 {
-    public async Task<Response<MassiveDataDto>> Handle(CreateMasiveCollaboratorCommand command, CancellationToken cancellationToken)
+    public async Task<Response<MassiveDataDto>> Handle(CreateMasiveSegmentCommand command, CancellationToken cancellationToken)
     {
         Response<MassiveDataDto> result = new();
         try
@@ -52,51 +50,15 @@ public class CreateMasiveCollaboratorCommandHandler
                     {
                         var cells = excelWorkbook.Worksheet(1).Row(i).Cells("1:10").ToList();
 
-                        var completeName = cells[0].Value.ToString();
-                        var rut = cells[1].Value.ToString();
-                        var leadershipName = cells[2].Value.ToString();
-                        var sede = cells[3].Value.ToString();
-                        var position = cells[4].Value.ToString();
-                        var phone = cells[5].Value.ToString();
-                        var email = cells[6].Value.ToString();
-                        var segmentName = cells[7].Value.ToString();
-                        var photoName = cells[8].Value.ToString();
-                        var status = (int)cells[9].Value;
-
-
-                        var leadership = _repoLeadership.GetAll().Where(x => x.Name.Contains(leadershipName)).FirstOrDefault();
-                        if(leadership == null)
-                        {
-                            errors.Add(new RowWithError()
-                            {
-                                RowNumber = i,
-                                Messsages = [$"La gerencia {cells[2].Value} no existe"]
-                            });
-                        }
-
-                        var segment = _repoSegment.GetAll().Where(x => x.Name.Contains(segmentName)).FirstOrDefault();
-                        if (segment == null)
-                        {
-                            errors.Add(new RowWithError()
-                            {
-                                RowNumber = i,
-                                Messsages = [$"El segmento {cells[0].Value} no existe"]
-                            });
-                        }
-
+                        var name = cells[0].Value.ToString();
+                        var color = cells[1].Value.ToString();
+                                              
                         try
                         {
-                            var res = await _mediator.Send(new CreateCollaboratorCommand
+                            var res = await _mediator.Send(new CreateSegmentCommand
                             {
-                                SegmentId = segment.Id,
-                                CompleteName = completeName,
-                                ECollaboratorStatus = (ECollaboratorStatus)status,
-                                Email = email,
-                                LeadershipId = leadership.Id,
-                                Phone = phone,
-                                Position = position,
-                                RUT = rut,
-                                Sede = sede,
+                                Name = name,
+                                Color = color
                             });
 
                             if (res.ErrorProvider != null && res.Result > 0)
@@ -105,11 +67,6 @@ public class CreateMasiveCollaboratorCommandHandler
                                 {
                                     RowNumber = i,
                                 });
-
-                                if (!String.IsNullOrEmpty(photoName) && res.Result > 0)
-                                {
-                                    SetPhoto(photoName, res.Result);
-                                }
                             }
                             else
                             {
@@ -118,7 +75,8 @@ public class CreateMasiveCollaboratorCommandHandler
                                     RowNumber = i,
                                     Messsages = res.ErrorProvider.GetErrors().Select(x => x.Message).ToList()
                                 });
-                            }                          
+                            }
+
                         }
                         catch (ValidationException ex)
                         {
@@ -136,7 +94,7 @@ public class CreateMasiveCollaboratorCommandHandler
                     Success = success,
                     Errors = errors,
                 };
-                return result;
+               
             }
             return result;
 

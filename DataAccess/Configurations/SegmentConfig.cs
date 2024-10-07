@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.Configurations
 {
-    public class AreaConfig : IEntityTypeConfiguration<Segment>
+    public class SegmentConfig : IEntityTypeConfiguration<Segment>
     {
         public void Configure(EntityTypeBuilder<Segment> builder)
         {

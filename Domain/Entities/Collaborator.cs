@@ -12,7 +12,7 @@ namespace Domain.Entities
         public string CompleteName { get; set; }
         public string Area { get; set; } //sede
         public int LeadershipId { get; set; }
-        public string SegmentId { get; set; } //sede
+        public int SegmentId { get; set; }
         public string Position { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }

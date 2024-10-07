@@ -18,13 +18,14 @@ using Utility.DTOs;
 
 namespace Application.Collaborators.Commands;
 
-public record CreateCollaboratorCommand : IRequest<Response<bool>>
+public record CreateCollaboratorCommand : IRequest<Response<int>>
 {
     public string CompleteName { get; set; }
     public string RUT { get; set; }
-    public string Area { get; set; }
     public int LeadershipId { get; set; }
+    public int SegmentId { get; set; }
     public string Position { get; set; }
+    public string Sede { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
     public ECollaboratorStatus ECollaboratorStatus { get; set; }
@@ -36,23 +37,24 @@ public class CreateCollaboratorCommandHandler
         IRepository<Collaborator> _repository,
         IMediator _mediator
     )
-    : IRequestHandler<CreateCollaboratorCommand, Response<bool>>
+    : IRequestHandler<CreateCollaboratorCommand, Response<int>>
 {
-    public async Task<Response<bool>> Handle(CreateCollaboratorCommand request, CancellationToken cancellationToken)
+    public async Task<Response<int>> Handle(CreateCollaboratorCommand request, CancellationToken cancellationToken)
     {
-        Response<bool> result = new();
+        Response<int> result = new();
         try
 		{
             var collaborator = new Collaborator()
             {
                 CompleteName = request.CompleteName,
                 RUT = request.RUT,
-                Area = request.Area,
+                Area = request.Sede,
                 LeadershipId = request.LeadershipId,
                 Position = request.Position,
                 Phone = request.Phone,
                 ECollaboratorStatus = request.ECollaboratorStatus,
                 Email = request.Email,
+                SegmentId = request.SegmentId,
                 Active = true
             };
 
@@ -64,6 +66,7 @@ public class CreateCollaboratorCommandHandler
 
             SendEmail(collaborator);
 
+            result.Result = collaborator.Id;
 
         }
         catch (Exception ex)
