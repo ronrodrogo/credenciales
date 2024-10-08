@@ -16,7 +16,7 @@ export class GerenciaService {
         formData.append("fileData", file);
 
         return lastValueFrom(this._httpClient.put(
-            `${environment.apiUrl}/leadership/UpdateMassive/`, formData
+            `${environment.apiUrl}/leadership/UploadMassive/`, formData
         ));
     }
 

@@ -16,7 +16,7 @@ export class SegmentService {
         formData.append("fileData", file);
 
         return lastValueFrom(this._httpClient.put(
-            `${environment.apiUrl}/segment/UpdateMassive/`, formData
+            `${environment.apiUrl}/segment/UploadMassive/`, formData
         ));
     }
 

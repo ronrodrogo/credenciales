@@ -16,7 +16,7 @@ export class CollaboratorService {
         formData.append("fileData", file);
 
         return lastValueFrom(this._httpClient.put(
-            `${environment.apiUrl}/collaborators/UpdateMassive/`, formData
+            `${environment.apiUrl}/collaborators/UploadMassive/`, formData
         ));
     }
 
