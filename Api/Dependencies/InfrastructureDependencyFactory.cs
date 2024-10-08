@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Api.Services;
 using Utility.PasswordHasher;
+using Application.Notifications;
 
 namespace Api.Dependencies
 {
@@ -14,6 +15,7 @@ namespace Api.Dependencies
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IErrorServiceProvider, ErrorServiceProvider>();
             services.AddTransient<IPasswordHasherService, PasswordHasherService>();
+            services.AddTransient<IEmailNotificationService, EmailNotificationService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ValidationActionFilter>();
         }

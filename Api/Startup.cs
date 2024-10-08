@@ -103,20 +103,17 @@ namespace Api
             }
 
 
-            //app.UseDevExpressControls();
-            //app.UseApiResponseWrapperMiddleware();
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
-                // endpoints.MapHub<NotificationHub>("/hubs/notificationHub");
+               
                 endpoints.MapControllers();
                 
             });

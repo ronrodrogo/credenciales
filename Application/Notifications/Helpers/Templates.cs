@@ -12,23 +12,18 @@ namespace Notifications.Helpers;
 
 public static class Templates
 {
-    public static async Task<string> FillTemplate(string templatePath, string fileName, Dictionary<string, string> @params)
+    public static async Task<string> FillTemplate(string fileName, Dictionary<string, string> @params)
     {
         try
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), templatePath, fileName);
-            //var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, templatePath, fileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
             var template = await File.ReadAllTextAsync(filePath);
            
             foreach (var (key, value) in @params)
             {
                 template = template?.Replace($"#${key}$#", value);
             }
-            //foreach (var (key, value) in @params)
-            //{
-            //    template.Subject = template.Subject?.Replace($"#${key}$#", value);
-            //}
-
+           
             return template;
         }
         catch (Exception e)

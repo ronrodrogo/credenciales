@@ -35,7 +35,8 @@ public record CreateCollaboratorCommand : IRequest<Response<int>>
 public class CreateCollaboratorCommandHandler
     (
         IRepository<Collaborator> _repository,
-        IMediator _mediator
+        IMediator _mediator,
+        IEmailNotificationService _emailNotification
     )
     : IRequestHandler<CreateCollaboratorCommand, Response<int>>
 {
@@ -58,11 +59,8 @@ public class CreateCollaboratorCommandHandler
                 Active = true
             };
 
-            //_repository.Add(collaborator);
-            //_repository.Save();
-
-            //if(request.Photo != null)
-            //    _mediator.Send(new AddAttachmentsCommand { CollaboratorId = collaborator.Id, AttachmentType = EAttachmentType.Photo, Attachment = request.Photo });
+            _repository.Add(collaborator);
+            _repository.Save();
 
             if (request.Photo != null)
                 _mediator.Send(new AddAttachmentsCommand { CollaboratorId = collaborator.Id, AttachmentType = EAttachmentType.Photo, Attachment = request.Photo });
@@ -79,18 +77,18 @@ public class CreateCollaboratorCommandHandler
 		return result;
     }
 
-    private static void SendEmail(Collaborator collaborator)
+    private void SendEmail(Collaborator collaborator)
     {
         Dictionary<string, string> data = new Dictionary<string, string>()
         {
             { "NAME", collaborator.CompleteName },
         };
 
-        EmailNotificationService.SendEmail(new EmailNotification
+        _emailNotification.SendEmail(new EmailNotification
         {
-            Body = Templates.FillTemplate("Assets/EmailTemplates", "CollaboratorCreation.html", data).Result,
+            Body = data,
             Subject = "Configura tu firma de correo",
-            ToEmail = collaborator.Email
+            ToEmail = collaborator.Email,
         });
     }
 }

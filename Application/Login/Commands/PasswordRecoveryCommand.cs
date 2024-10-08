@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
@@ -24,22 +25,12 @@ public record PasswordRecoveryCommand : IRequest<Response<bool>>
     public string Username { get; set; }
 }
 
-public class PasswordRecoveryCommandHandler : IRequestHandler<PasswordRecoveryCommand, Response<bool>>
+public class PasswordRecoveryCommandHandler(
+        IRepository<User> _repository,
+        IPasswordHasherService _passwordHasher,
+        IEmailNotificationService _emailNotificationService
+        ) : IRequestHandler<PasswordRecoveryCommand, Response<bool>>
 {
-    private readonly IRepository<User> _repository;
-    private readonly IMapper _mapper;
-    private readonly IPasswordHasherService _passwordHasher;
-
-    public PasswordRecoveryCommandHandler(
-        IRepository<User> repository,
-        IPasswordHasherService passwordHasherService,
-        IMapper mapper
-        )
-    {
-        _repository = repository;
-        _mapper = mapper;
-        _passwordHasher = passwordHasherService;
-    }
 
     public async Task<Response<bool>> Handle(PasswordRecoveryCommand command, CancellationToken cancellationToken)
     {
@@ -47,6 +38,7 @@ public class PasswordRecoveryCommandHandler : IRequestHandler<PasswordRecoveryCo
         try
         {
             var user = _repository.GetAllActive()
+                .Include(x=> x.Collaborator)
                  .FirstOrDefault(x => x.Email == command.Username);
 
             if (user is not null)
@@ -58,14 +50,17 @@ public class PasswordRecoveryCommandHandler : IRequestHandler<PasswordRecoveryCo
                 _repository.Update(user);
                 _repository.Save();
 
-                EmailNotificationService.SendEmail(new EmailNotification
+                _emailNotificationService.SendEmail(new EmailNotification
                 {
                     Subject = "Recuperar contraseña",
-                    Body = $"Tu contraseña temporal es: {tempPass}",
+                    Body = new Dictionary<string, string> {
+                        { "NAME", user.Collaborator?.CompleteName },
+                        { "TEXT", $"Ingresa con la siguiente contraseña temporal: <br><br> {tempPass}  <br><br>Te solicitará cambio al ingresar." }
+                    },
                     ToEmail = user.Email
                 });
             }
-             
+
             result.Result = true;
 
         }
@@ -76,12 +71,12 @@ public class PasswordRecoveryCommandHandler : IRequestHandler<PasswordRecoveryCo
         return result;
     }
 
-    
-   
+
+  }
 
 
 
-}
+
 
 
 

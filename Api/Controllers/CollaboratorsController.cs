@@ -1,12 +1,16 @@
+using Application.Attachments.Commands;
 using Application.Collaborators.Commands;
 using Application.Collaborators.Queries;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Domain.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using System.Threading.Tasks;
 namespace Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/collaborators")]
     public class CollaboratorsController : ControllerBase
@@ -33,5 +37,16 @@ namespace Api.Controllers
             return HandleResult(result.Result, result.ErrorProvider);
         }
 
+
+        [AllowAnonymous]
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            var result = await Mediator.Send(new AddAttachmentsCommand { Attachment = file});
+           
+
+            return Ok();
+        }
     }
 }
