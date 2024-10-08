@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using Application.Leaderships.Commands;
 using ClosedXML.Excel;
 using Domain.Entities;
 using Domain.Enums;
@@ -15,29 +14,29 @@ using System.Threading.Tasks;
 using Utility.APIResponseHandlers.Wrappers;
 using Utility.DTOs;
 
-namespace Application.Leaderships.Commands;
+namespace Application.Segments.Commands.Creates;
 
-public record CreateMasiveLeadershipCommand : IRequest<Response<MassiveDataDto>>
+public record CreateMasiveSegmentCommand : IRequest<Response<MassiveDataDto>>
 {
     public IFormFile FileData { get; init; }
 }
 
-public class CreateMasiveLeadershipCommandHandler
+public class CreateMasiveSegmentCommandHandler
     (
         IRepository<Collaborator> _repository,
         IRepository<Leadership> _repoLeadership,
         IRepository<Segment> _repoSegment,
         IRepository<Attachment> _repoAttachment,
-        IConfiguration  _configuration,
+        IConfiguration _configuration,
         IMediator _mediator
     )
-    : IRequestHandler<CreateMasiveLeadershipCommand, Response<MassiveDataDto>>
+    : IRequestHandler<CreateMasiveSegmentCommand, Response<MassiveDataDto>>
 {
-    public async Task<Response<MassiveDataDto>> Handle(CreateMasiveLeadershipCommand command, CancellationToken cancellationToken)
+    public async Task<Response<MassiveDataDto>> Handle(CreateMasiveSegmentCommand command, CancellationToken cancellationToken)
     {
         Response<MassiveDataDto> result = new();
         try
-		{
+        {
             if (command.FileData != null)
             {
                 var stream = command.FileData.OpenReadStream();
@@ -52,15 +51,17 @@ public class CreateMasiveLeadershipCommandHandler
                         var cells = excelWorkbook.Worksheet(1).Row(i).Cells("1:10").ToList();
 
                         var name = cells[0].Value.ToString();
-                                              
+                        var color = cells[1].Value.ToString();
+
                         try
                         {
-                            var res = await _mediator.Send(new CreateLeadershipCommand
+                            var res = await _mediator.Send(new CreateSegmentCommand
                             {
-                                Name = name
+                                Name = name,
+                                Color = color
                             });
 
-                            if(res.ErrorProvider != null && res.Result > 0)
+                            if (!res.ErrorProvider.HasError() && res.Result > 0)
                             {
                                 success.Add(new RowSuccess
                                 {
@@ -73,11 +74,11 @@ public class CreateMasiveLeadershipCommandHandler
                                 {
                                     RowNumber = i,
                                     Messsages = res.ErrorProvider.GetErrors().Select(x => x.Message).ToList()
-                                });                               
+                                });
                             }
 
                         }
-                        catch (Exception ex)
+                        catch (ValidationException ex)
                         {
                             errors.Add(new RowWithError
                             {
@@ -93,16 +94,17 @@ public class CreateMasiveLeadershipCommandHandler
                     Success = success,
                     Errors = errors,
                 };
+
             }
             return result;
 
 
         }
         catch (Exception ex)
-		{
+        {
             result.ErrorProvider.AddError(ex.Source, ex.GetBaseException().Message);
         }
-		return result;
+        return result;
     }
 
     private bool SetPhoto(string photoName, int collaboratorId)

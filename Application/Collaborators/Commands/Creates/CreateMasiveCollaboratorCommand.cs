@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using Utility.APIResponseHandlers.Wrappers;
 using Utility.DTOs;
 
-namespace Application.Collaborators.Commands;
+namespace Application.Collaborators.Commands.Creates;
 
 public record CreateMasiveCollaboratorCommand : IRequest<Response<MassiveDataDto>>
 {
@@ -29,7 +29,7 @@ public class CreateMasiveCollaboratorCommandHandler
         IRepository<Leadership> _repoLeadership,
         IRepository<Segment> _repoSegment,
         IRepository<Attachment> _repoAttachment,
-        IConfiguration  _configuration,
+        IConfiguration _configuration,
         IMediator _mediator
     )
     : IRequestHandler<CreateMasiveCollaboratorCommand, Response<MassiveDataDto>>
@@ -38,7 +38,7 @@ public class CreateMasiveCollaboratorCommandHandler
     {
         Response<MassiveDataDto> result = new();
         try
-		{
+        {
             if (command.FileData != null)
             {
                 var stream = command.FileData.OpenReadStream();
@@ -50,7 +50,7 @@ public class CreateMasiveCollaboratorCommandHandler
                     int startIndex = rows.Count();
                     for (int i = 2; i <= rows.Count(); i++)
                     {
-                        var cells = excelWorkbook.Worksheet(1).Row(i).Cells("1:10").ToList();
+                        var cells = excelWorkbook.Worksheet(1).Row(i).Cells("1:25").ToList();
 
                         var completeName = cells[0].Value.ToString();
                         var rut = cells[1].Value.ToString();
@@ -63,25 +63,34 @@ public class CreateMasiveCollaboratorCommandHandler
                         var photoName = cells[8].Value.ToString();
                         var status = (int)cells[9].Value;
 
-
-                        var leadership = _repoLeadership.GetAll().Where(x => x.Name.Contains(leadershipName)).FirstOrDefault();
-                        if(leadership == null)
-                        {
-                            errors.Add(new RowWithError()
-                            {
-                                RowNumber = i,
-                                Messsages = [$"La gerencia {cells[2].Value} no existe"]
-                            });
-                        }
-
-                        var segment = _repoSegment.GetAll().Where(x => x.Name.Contains(segmentName)).FirstOrDefault();
+                        var segment = _repoSegment.GetAll().Where(x => x.Name == segmentName).FirstOrDefault();
                         if (segment == null)
                         {
                             errors.Add(new RowWithError()
                             {
                                 RowNumber = i,
-                                Messsages = [$"El segmento {cells[0].Value} no existe"]
+                                Messsages = [$"El segmento {segmentName} no existe"]
                             });
+                        }
+
+                        var leadership = _repoLeadership.GetAll().Where(x => x.Name == leadershipName).FirstOrDefault();
+                        if (leadership == null)
+                        {
+                            errors.Add(new RowWithError()
+                            {
+                                RowNumber = i,
+                                Messsages = [$"La gerencia {leadershipName} no existe"]
+                            });
+                        }
+
+                        if (errors.Count > 0)
+                        {
+                            result.Result = new()
+                            {
+                                Success = success,
+                                Errors = errors,
+                            };
+                            return result;
                         }
 
                         try
@@ -99,14 +108,14 @@ public class CreateMasiveCollaboratorCommandHandler
                                 Sede = sede,
                             });
 
-                            if (res.ErrorProvider != null && res.Result > 0)
+                            if (!res.ErrorProvider.HasError() && res.Result > 0)
                             {
                                 success.Add(new RowSuccess
                                 {
                                     RowNumber = i,
                                 });
 
-                                if (!String.IsNullOrEmpty(photoName) && res.Result > 0)
+                                if (!string.IsNullOrEmpty(photoName))
                                 {
                                     SetPhoto(photoName, res.Result);
                                 }
@@ -118,7 +127,7 @@ public class CreateMasiveCollaboratorCommandHandler
                                     RowNumber = i,
                                     Messsages = res.ErrorProvider.GetErrors().Select(x => x.Message).ToList()
                                 });
-                            }                          
+                            }
                         }
                         catch (ValidationException ex)
                         {
@@ -143,10 +152,10 @@ public class CreateMasiveCollaboratorCommandHandler
 
         }
         catch (Exception ex)
-		{
+        {
             result.ErrorProvider.AddError(ex.Source, ex.GetBaseException().Message);
         }
-		return result;
+        return result;
     }
 
     private bool SetPhoto(string photoName, int collaboratorId)

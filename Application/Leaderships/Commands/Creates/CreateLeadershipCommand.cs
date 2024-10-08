@@ -16,7 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Utility.DTOs;
 
-namespace Application.Leaderships.Commands;
+namespace Application.Leaderships.Commands.Creates;
 
 public record CreateLeadershipCommand : IRequest<Response<int>>
 {
@@ -34,9 +34,9 @@ public class CreateAreaCommandHandler
     {
         Response<int> result = new();
         try
-		{
+        {
             var exists = _repository.GetAll().Any(x => x.Name == request.Name);
-            if(exists)
+            if (exists)
             {
                 throw new Exception($"Gerencia {request.Name} ya existe");
             }
@@ -54,10 +54,10 @@ public class CreateAreaCommandHandler
 
         }
         catch (Exception ex)
-		{
+        {
             result.ErrorProvider.AddError(ex.Source, ex.GetBaseException().Message);
         }
-		return result;
+        return result;
     }
 
 }

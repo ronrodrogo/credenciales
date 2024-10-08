@@ -7,7 +7,6 @@ using Domain.Entities;
 using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Notifications.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +15,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Utility.DTOs;
 
-namespace Application.Collaborators.Commands;
+namespace Application.Collaborators.Commands.Updates;
 
-public record CreateCollaboratorCommand : IRequest<Response<int>>
+public record UpdateCollaboratorCommand : IRequest<Response<int>>
 {
+    public int Id { get; set; }
     public string CompleteName { get; set; }
-    public string RUT { get; set; }
     public int LeadershipId { get; set; }
     public int SegmentId { get; set; }
     public string Position { get; set; }
@@ -35,46 +34,57 @@ public record CreateCollaboratorCommand : IRequest<Response<int>>
 public class CreateCollaboratorCommandHandler
     (
         IRepository<Collaborator> _repository,
+        IRepository<Attachment> _repositoryAttach,
         IMediator _mediator,
         IEmailNotificationService _emailNotification
     )
-    : IRequestHandler<CreateCollaboratorCommand, Response<int>>
+    : IRequestHandler<UpdateCollaboratorCommand, Response<int>>
 {
-    public async Task<Response<int>> Handle(CreateCollaboratorCommand request, CancellationToken cancellationToken)
+    public async Task<Response<int>> Handle(UpdateCollaboratorCommand request, CancellationToken cancellationToken)
     {
         Response<int> result = new();
         try
-		{
-            var collaborator = new Collaborator()
-            {
-                CompleteName = request.CompleteName,
-                RUT = request.RUT,
-                Area = request.Sede,
-                LeadershipId = request.LeadershipId,
-                Position = request.Position,
-                Phone = request.Phone,
-                ECollaboratorStatus = request.ECollaboratorStatus,
-                Email = request.Email,
-                SegmentId = request.SegmentId,
-                Active = true
-            };
+        {
+            var collaborator = _repository.GetAll().First(x => x.Id == request.Id);
 
-            _repository.Add(collaborator);
+            collaborator.CompleteName = request.CompleteName;
+            collaborator.Area = request.Sede;
+            collaborator.LeadershipId = request.LeadershipId;
+            collaborator.Position = request.Position;
+            collaborator.Phone = request.Phone;
+            collaborator.ECollaboratorStatus = request.ECollaboratorStatus;
+            collaborator.Email = request.Email;
+            collaborator.SegmentId = request.SegmentId;
+
+            _repository.Update(collaborator);
             _repository.Save();
 
             if (request.Photo != null)
+            {
+                //delete current
+                var currentPhoto = _repositoryAttach.GetAll().FirstOrDefault(x => x.CollaboratorId == request.Id && x.EAttachmentType == EAttachmentType.Photo);
+                if (currentPhoto != null)
+                {
+                    currentPhoto.Active = false;
+                    _repositoryAttach.Update(currentPhoto);
+                    _repositoryAttach.Save();
+                }
+
+                //add new
                 _mediator.Send(new AddAttachmentsCommand { CollaboratorId = collaborator.Id, AttachmentType = EAttachmentType.Photo, Attachment = request.Photo });
 
-            SendEmail(collaborator);
+            }
+
+            SendEmail(collaborator); //TODO: se debe enviar la credencial cuando se actualiza un colaborador?
 
             result.Result = collaborator.Id;
 
         }
         catch (Exception ex)
-		{
+        {
             result.ErrorProvider.AddError(ex.Source, ex.GetBaseException().Message);
         }
-		return result;
+        return result;
     }
 
     private void SendEmail(Collaborator collaborator)
@@ -89,6 +99,7 @@ public class CreateCollaboratorCommandHandler
             Body = data,
             Subject = "Configura tu firma de correo",
             ToEmail = collaborator.Email,
+            TemplateName = "CollaboratorCreation.html"
         });
     }
 }

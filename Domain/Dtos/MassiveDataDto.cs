@@ -12,7 +12,7 @@ namespace EAS.Domain.DTOs
         public List<string> Messsages { get; set; }
     }
 
-    public class RowSuccess : MassiveDataDto
+    public class RowSuccess
     {
         public int RowNumber { get; set; }
     }

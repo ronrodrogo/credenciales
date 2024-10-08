@@ -7,7 +7,6 @@ using Domain.Entities;
 using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Notifications.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,44 +15,44 @@ using System.Threading;
 using System.Threading.Tasks;
 using Utility.DTOs;
 
-namespace Application.Segments.Commands;
+namespace Application.Segments.Commands.Updates;
 
-public record CreateSegmentCommand : IRequest<Response<int>>
+public record UpdateSegmentCommand : IRequest<Response<int>>
 {
+    public int Id { get; set; }
     public string Name { get; set; }
-    public string Color { get; set; }
+    public bool Active { get; set; }
 }
 
 public class CreateCollaboratorCommandHandler
     (
         IRepository<Segment> _repository,
-        IMediator _mediator
+        IMediator _mediator,
+        IEmailNotificationService _emailNotification
     )
-    : IRequestHandler<CreateSegmentCommand, Response<int>>
+    : IRequestHandler<UpdateSegmentCommand, Response<int>>
 {
-    public async Task<Response<int>> Handle(CreateSegmentCommand request, CancellationToken cancellationToken)
+    public async Task<Response<int>> Handle(UpdateSegmentCommand request, CancellationToken cancellationToken)
     {
         Response<int> result = new();
         try
-		{
-            var segment = new Segment()
-            {
-                Name = request.Name,
-                Color = request.Color, 
-            };
+        {
+            var data = _repository.GetAll().First(x => x.Id == request.Id);
 
-            _repository.Add(segment);
+            data.Name = request.Name;
+            data.Active = request.Active;
+
+            _repository.Update(data);
             _repository.Save();
 
-
-            result.Result = segment.Id;
+            result.Result = data.Id;
 
         }
         catch (Exception ex)
-		{
+        {
             result.ErrorProvider.AddError(ex.Source, ex.GetBaseException().Message);
         }
-		return result;
+        return result;
     }
 
 }

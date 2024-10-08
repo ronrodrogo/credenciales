@@ -14,31 +14,29 @@ using System.Threading.Tasks;
 using Utility.DTOs;
 
 
-namespace Application.Collaborators.Queries;
+namespace Application.Leaderships.Queries;
 
-public class GetCollaboratorsPaginatedQueryDE : IRequest<Response<LoadResult>>
+public class GetLeadershipsPaginatedQueryDE : IRequest<Response<LoadResult>>
 {
     public DataSourceLoadOptionsBase Params { get; set; }
 }
 
-public class GetCollaboratorsPaginatedQueryDEHandler
+public class GeLeadershipPaginatedQueryDEHandler
     (
-        IRepository<Collaborator> _repository,
+        IRepository<Leadership> _repository,
         IMapper _mapper
     ) 
-    : IRequestHandler<GetCollaboratorsPaginatedQueryDE, Response<LoadResult>>
+    : IRequestHandler<GetLeadershipsPaginatedQueryDE, Response<LoadResult>>
 {
 
-    public async Task<Response<LoadResult>> Handle(GetCollaboratorsPaginatedQueryDE request, CancellationToken cancellationToken)
+    public async Task<Response<LoadResult>> Handle(GetLeadershipsPaginatedQueryDE request, CancellationToken cancellationToken)
     {
         Response<LoadResult> result = new();
 
         try
         {
             var filter = _repository.GetAllActive()
-                        .Include(x => x.Leadership)
                         .AsNoTracking()
-                        .ProjectTo<CollaboratorDEDto>(_mapper.ConfigurationProvider)
                         .OrderByDescending(x => x.Id);
 
             var loadResult = await DataSourceLoader.LoadAsync(filter, request.Params, cancellationToken);

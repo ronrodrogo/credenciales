@@ -14,29 +14,29 @@ using System.Threading.Tasks;
 using Utility.APIResponseHandlers.Wrappers;
 using Utility.DTOs;
 
-namespace Application.Segments.Commands;
+namespace Application.Leaderships.Commands.Creates;
 
-public record CreateMasiveSegmentCommand : IRequest<Response<MassiveDataDto>>
+public record CreateMasiveLeadershipCommand : IRequest<Response<MassiveDataDto>>
 {
     public IFormFile FileData { get; init; }
 }
 
-public class CreateMasiveSegmentCommandHandler
+public class CreateMasiveLeadershipCommandHandler
     (
         IRepository<Collaborator> _repository,
         IRepository<Leadership> _repoLeadership,
         IRepository<Segment> _repoSegment,
         IRepository<Attachment> _repoAttachment,
-        IConfiguration  _configuration,
+        IConfiguration _configuration,
         IMediator _mediator
     )
-    : IRequestHandler<CreateMasiveSegmentCommand, Response<MassiveDataDto>>
+    : IRequestHandler<CreateMasiveLeadershipCommand, Response<MassiveDataDto>>
 {
-    public async Task<Response<MassiveDataDto>> Handle(CreateMasiveSegmentCommand command, CancellationToken cancellationToken)
+    public async Task<Response<MassiveDataDto>> Handle(CreateMasiveLeadershipCommand command, CancellationToken cancellationToken)
     {
         Response<MassiveDataDto> result = new();
         try
-		{
+        {
             if (command.FileData != null)
             {
                 var stream = command.FileData.OpenReadStream();
@@ -51,17 +51,15 @@ public class CreateMasiveSegmentCommandHandler
                         var cells = excelWorkbook.Worksheet(1).Row(i).Cells("1:10").ToList();
 
                         var name = cells[0].Value.ToString();
-                        var color = cells[1].Value.ToString();
-                                              
+
                         try
                         {
-                            var res = await _mediator.Send(new CreateSegmentCommand
+                            var res = await _mediator.Send(new CreateLeadershipCommand
                             {
-                                Name = name,
-                                Color = color
+                                Name = name
                             });
 
-                            if (res.ErrorProvider != null && res.Result > 0)
+                            if (!res.ErrorProvider.HasError() && res.Result > 0)
                             {
                                 success.Add(new RowSuccess
                                 {
@@ -78,7 +76,7 @@ public class CreateMasiveSegmentCommandHandler
                             }
 
                         }
-                        catch (ValidationException ex)
+                        catch (Exception ex)
                         {
                             errors.Add(new RowWithError
                             {
@@ -94,17 +92,16 @@ public class CreateMasiveSegmentCommandHandler
                     Success = success,
                     Errors = errors,
                 };
-               
             }
             return result;
 
 
         }
         catch (Exception ex)
-		{
+        {
             result.ErrorProvider.AddError(ex.Source, ex.GetBaseException().Message);
         }
-		return result;
+        return result;
     }
 
     private bool SetPhoto(string photoName, int collaboratorId)

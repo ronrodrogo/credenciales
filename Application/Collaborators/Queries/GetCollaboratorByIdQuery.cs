@@ -16,34 +16,34 @@ using Utility.DTOs;
 
 namespace Application.Collaborators.Queries;
 
-public class GetCollaboratorsPaginatedQueryDE : IRequest<Response<LoadResult>>
+public class GetCollaboratorByIdQuery : IRequest<Response<CollaboratorDEDto>>
 {
-    public DataSourceLoadOptionsBase Params { get; set; }
+    public int Id { get; set; }
 }
 
-public class GetCollaboratorsPaginatedQueryDEHandler
+public class GetCollaboratorByIdQueryHandler
     (
         IRepository<Collaborator> _repository,
         IMapper _mapper
     ) 
-    : IRequestHandler<GetCollaboratorsPaginatedQueryDE, Response<LoadResult>>
+    : IRequestHandler<GetCollaboratorByIdQuery, Response<CollaboratorDEDto>>
 {
 
-    public async Task<Response<LoadResult>> Handle(GetCollaboratorsPaginatedQueryDE request, CancellationToken cancellationToken)
+    public async Task<Response<CollaboratorDEDto>> Handle(GetCollaboratorByIdQuery request, CancellationToken cancellationToken)
     {
-        Response<LoadResult> result = new();
+        Response<CollaboratorDEDto> result = new();
 
         try
         {
-            var filter = _repository.GetAllActive()
+            var data = _repository.GetAllActive()
                         .Include(x => x.Leadership)
+                        .Include(x => x.Segment)
                         .AsNoTracking()
                         .ProjectTo<CollaboratorDEDto>(_mapper.ConfigurationProvider)
-                        .OrderByDescending(x => x.Id);
+                        .Where(x => x.Id == request.Id)
+                        .FirstOrDefault();
 
-            var loadResult = await DataSourceLoader.LoadAsync(filter, request.Params, cancellationToken);
-
-            result.Result = loadResult;
+            result.Result = data;
         }
         catch (Exception ex)
         {

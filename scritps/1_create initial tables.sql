@@ -1,7 +1,7 @@
 
 CREATE TABLE dbo.Attachments (
     Id INT PRIMARY KEY IDENTITY(1,1),
-	CollaboratorIdId int not null,
+	CollaboratorId int not null,
     FileName VARCHAR(50) NOT NULL,
     Description VARCHAR(150) NOT NULL,
 	EAttachmentType int not null,
@@ -44,6 +44,7 @@ CREATE TABLE dbo.Segment (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Color VARCHAR(150) NOT NULL,
 	Description VARCHAR(150) NULL,
+	Active bit NOT NULL
 );
 
 

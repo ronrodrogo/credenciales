@@ -42,7 +42,7 @@ public class AddAttachmentsCommandHandler
         Response<int> result = new();
         try
         {
-            var folderPath = Path.Combine(_configuration["AzureTranslator:Key"]);
+            var folderPath = Path.Combine(_configuration["FilesRoutes"]);
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);

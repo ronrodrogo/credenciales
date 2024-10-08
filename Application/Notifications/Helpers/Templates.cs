@@ -16,7 +16,7 @@ public static class Templates
     {
         try
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "EmailTemplates", fileName);
             var template = await File.ReadAllTextAsync(filePath);
            
             foreach (var (key, value) in @params)

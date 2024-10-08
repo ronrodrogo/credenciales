@@ -19,7 +19,7 @@ namespace Application.Notifications
     {
         public void SendEmail(EmailNotification notification)
         {
-            var fromEmail = _configuration["EmailConfiguration:Email"];
+            var fromEmail = _configuration["EmailConfiguration:FromEmail"];
             var fromPassword = _configuration["EmailConfiguration:Password"];
             var smtpHost = _configuration["EmailConfiguration:SmtpHost"];
             var smtpPort = Convert.ToInt32(_configuration["EmailConfiguration:Port"]);
