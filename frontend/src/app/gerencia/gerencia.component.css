@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 
@@ -8,16 +8,14 @@ body {
   font-family: "Open Sans", sans-serif;
   font-size: small;
   overflow-y: auto;
-  text-decoration: none;
-  color: inherit;
+
 }
 
 .title{
   font-size: x-large;
-  font-family: "Titillium Web", sans-serif;
-  font-weight: 600;
-}
+  font-family: "Inria Sans", sans-serif;
 
+}
 
 
 .toolbar {
@@ -36,46 +34,21 @@ body {
   border: 1px solid #ccc;
 }
 
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; 
+  background-color: rgb(238, 238, 238);
 
-
-
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-  border: none;
 }
+
 
 .btn-secondary {
   background-color: #6c757d;
   color: white;
   border: none;
 }
-.btn-primary-1 {
-  background-color: white;
-  color: #005bb5;
-  border: 2px solid #005bb5;
-  cursor: pointer;
-  width: 10%; 
-  font-family: "Open Sans", sans-serif;
-  font-size: medium;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-}
 
-.no-underline {
-  text-decoration: none; 
-  color: inherit; 
-}
-
-
-
-.toolbar .btn {
-  font-size: 14px;
-  border-radius: 5px;
-  display: inline-block;
-}
 
 .pagination {
   display: flex;

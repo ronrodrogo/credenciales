@@ -5,11 +5,11 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ColaboradoresComponent } from './colaboradores/colaboradores.component';
 import { Router } from '@angular/router'; 
-import { AreasComponent } from './areas/areas.component';
-import { JefaturasComponent } from './jefaturas/jefaturas.component';
+import { SegmentosComponent } from './segmentos/segmentos.component';
+import { GerenciasComponent } from './gerencia/gerencia.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CredencialComponent } from './credencial/credencial.component';
-
+import { GenerarCredencialComponent } from './generar-credencial/generar-credencial.component';
+import { GenerarFirmaComponent } from './generar-firma/generar-firma.component';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +20,12 @@ import { CredencialComponent } from './credencial/credencial.component';
     HeaderComponent,
     FooterComponent,
     ColaboradoresComponent,
-    AreasComponent,
-    JefaturasComponent,
+    SegmentosComponent,
+    GerenciasComponent,
     FormsModule,
     ReactiveFormsModule,
-    CredencialComponent,
+    GenerarCredencialComponent,
+    GenerarFirmaComponent,
 
   ],
   templateUrl: './app.component.html',
