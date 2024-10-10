@@ -5,11 +5,11 @@ import { SearchSectionComponent } from '../search-section/search-section.compone
 import { CollaboratorService } from '../../services/collaborators.service';
 import { GerenciaService } from '../../services/gerencia.service';
 import { SegmentService } from '../../services/segment.service';
-import { ColaboradoresComponent } from '../colaboradores/colaboradores.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormsModule, MantenedoresComponent,SearchSectionComponent,],  
+  imports: [FormsModule, MantenedoresComponent, SearchSectionComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -20,35 +20,33 @@ export class HomeComponent {
     email: '',
     password: ''
   };
+  selectedFile: File | null = null; 
 
   constructor(
-    private collaboratorService: CollaboratorService ,
-    private gerenciaService: GerenciaService ,
-    private segmentService: SegmentService,
-  ){
+    private collaboratorService: CollaboratorService,
+    private gerenciaService: GerenciaService,
+    private segmentService: SegmentService
+  ) {}
 
-  }
+  onSearch() {}
 
-  onSearch() {
+  onFileSelected(event: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0]; 
+      console.log('Archivo seleccionado:', this.selectedFile.name);
+    }
   }
 
   onUpload() {
-
-    // Implementar lógica de carga de archivos
-
-    //cargar el archivo
-    var file;
-
-    this.collaboratorService.uploadMissiveCollaborator(file);
-
-    //gerencias
-    this.gerenciaService.uploadMissiveLeadership(file);
-
-    //segmento
-    this.segmentService.uploadMissiveSegment(file);
+    if (this.selectedFile) {
+      this.collaboratorService.uploadMissiveCollaborator(this.selectedFile);
+      this.gerenciaService.uploadMissiveLeadership(this.selectedFile);
+      this.segmentService.uploadMissiveSegment(this.selectedFile);
+    } else {
+      console.warn('No se ha seleccionado ningún archivo.');
+    }
   }
-
-  
 
   iniciarSesion() {
     if (this.usuario.email === "usuario@ejemplo.com" && this.usuario.password === "c") {

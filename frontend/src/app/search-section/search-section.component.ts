@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CollaboratorService } from '../../services/collaborators.service';
@@ -11,10 +11,12 @@ import { CollaboratorService } from '../../services/collaborators.service';
   styleUrls: ['./search-section.component.css']
 })
 export class SearchSectionComponent {
+  @Output() colaboradoresActualizados = new EventEmitter<any[]>(); 
+
   searchQuery: string = '';
   isDropdownVisible: boolean = false; 
   selectedOption: string | null = null; 
-  selectedFile: File | null = null; 
+  selectedFile: File | null = null;  
 
   constructor(private collaboratorService: CollaboratorService) {}
 
@@ -33,14 +35,22 @@ export class SearchSectionComponent {
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0]; 
-    if (this.selectedFile) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0]; 
       console.log('Archivo seleccionado:', this.selectedFile.name);
+      
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const fileContent = e.target.result;
+        console.log('Contenido del archivo:', fileContent); 
+      };
+      reader.readAsText(this.selectedFile); 
     } else {
-      console.log('No se seleccionó ningún archivo.');
+      this.selectedFile = null;
+      console.log('No se ha seleccionado ningún archivo.');
     }
   }
-  
 
   onLoadExcel() {
     if (this.selectedFile && this.selectedOption) {
