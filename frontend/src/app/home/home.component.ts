@@ -41,7 +41,7 @@ export class HomeComponent {
   onUpload() {
     if (this.selectedFile) {
       this.collaboratorService.uploadMissiveCollaborator(this.selectedFile);
-      this.gerenciaService.uploadMissiveLeadership(this.selectedFile);
+      this.gerenciaService.uploadMissiveGerencia(this.selectedFile);
       this.segmentService.uploadMissiveSegment(this.selectedFile);
     } else {
       console.warn('No se ha seleccionado ningún archivo.');

@@ -1,80 +1,55 @@
 <div class="table-container">
-  <div class="toolbar">
-      <h1 class="title">Mantenedores / </h1>
-      <h1 class="title" style="color: grey;">Áreas</h1>
+    <div class="toolbar">
+        <h1 class="title">Mantenedores / </h1>
+        <h1 class="title" style="color: grey;">Áreas</h1>
 
-      <button class="btn btn-primary" (click)="cargarSegmentos()">
-          <input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput />
-          <span (click)="fileInput.click()">Cargar Áreas</span>
-      </button>
+        <button class="btn btn-primary" (click)="cargarSegmentos()">
+            <input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput />
+            <span (click)="fileInput.click()">Cargar Áreas</span>
+        </button>
 
-      <button class="btn btn-primary">
-          <img src="/icons/crear.svg" class="option-icon" style="margin-right: 10px;">
-          <span>Nueva Área</span>      
-      </button>
-  </div>
+        <button class="btn btn-primary">
+            <img src="/icons/crear.svg" class="option-icon" style="margin-right: 10px;">
+            <span>Nueva Área</span>
+        </button>
+    </div>
 
-  <div class="table-wrapper">
-      <table class="table">
-          <thead>
-              <tr>
-                  <th><input type="checkbox"></th>
-                  <th>Centro de Coste / área</th>
-                  <th>Fecha creación</th>
-                  <th>Editado</th>
-                  <th>Color ID</th> 
-                  <th>Acciones</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr *ngFor="let segmento of paginatedSegmentos">
-                  <td><input type="checkbox"></td>
-                  <td>{{ segmento.centro_coste }}</td>
-                  <td>{{ segmento.fecha }}</td>
-                  <td>{{ segmento.editado }}</td>
-                  <td>
-                      <span [ngClass]="
-                          segmento.color_id === 'administracion' ? 'color-administracion' :
-                          segmento.color_id === 'packaging' ? 'color-packaging' :
-                          segmento.color_id === 'frigorifico' ? 'color-frigorifico' :
-                          segmento.color_id === 'patio' ? 'color-patio' :
-                          segmento.color_id === 'bodega' ? 'color-bodega' :
-                          segmento.color_id === 'agricola' ? 'color-agricola' :
-                          segmento.color_id === 'vivero' ? 'color-vivero' :
-                          segmento.color_id === 'mantencion' ? 'color-mantencion' :
-                          segmento.color_id === 'calidad' ? 'color-calidad' :
-                          segmento.color_id === 'v.clientes' ? 'color-v-clientes' :
-                          segmento.color_id === 'v.productores' ? 'color-v-productores' :
-                          segmento.color_id === 'v.proveedores' ? 'color-v-proveedores' : ''
-                      ">
-                          {{ segmento.color_id }}
-                      </span>
-                  </td>
-                  <td>
-                      <button class="btn-edit">
-                          <img src="/icons/pen-to-square-solid.svg" style="width: 16px; height: 16px; margin-right: 5px;" /> 
-                      </button>
-                      <button class="btn-delete" (click)="eliminar()">
-                          <img src="/icons/trash-solid.svg" alt="Eliminar" style="width: 16px; height: 16px; margin-right: 5px;" /> 
-                      </button>
-                  </td>
-              </tr>
-          </tbody>
-      </table>  
-  </div>
-
-  <div class="pagination">
-      <span class="label">Principio</span>
-      <span (click)="previousPage()" [class.disabled]="currentPage === 1" class="arrow">‹</span>
-      
-      <div class="page-numbers">
-          <button *ngFor="let page of pages()" (click)="goToPage(page)" [class.active]="currentPage === page">
-              {{ page }}
-          </button>
-      </div>
-      <span (click)="nextPage()" [class.disabled]="currentPage === totalPages" class="arrow">›</span>
-      <span class="label">Final</span>
-  </div>
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>Nombre Completo</th>
+                    <th>RUT</th>
+                    <th>Gerencia</th>
+                    <th>Sede</th>
+                    <th>Cargo</th>
+                    <th>Celular</th>
+                    <th>Correo Electrónico</th>
+                    <th>Segmento</th>
+                    <th>Nombre Foto</th>
+                    <th>Tipo Colaborador</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let segmento of segmentos">
+                    <td><input type="checkbox"></td>
+                    <td>{{ segmento.nombreCompleto }}</td>
+                    <td>{{ segmento.rut }}</td>
+                    <td>{{ segmento.gerencia }}</td>
+                    <td>{{ segmento.sede }}</td>
+                    <td>{{ segmento.cargo }}</td>
+                    <td>{{ segmento.celular }}</td>
+                    <td>{{ segmento.correoElectronico }}</td>
+                    <td>{{ segmento.segmento }}</td>
+                    <td>{{ segmento.nombreFoto }}</td>
+                    <td>{{ segmento.tipoColaborador }}</td>
+                    <td>
+                        <button class="btn-edit">...</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>  
+    </div>
 </div>
-
-<app-eliminar *ngIf="mostrarFormulario" (cerrar)="cerrarFormulario()"></app-eliminar>

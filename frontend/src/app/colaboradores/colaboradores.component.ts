@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NuevoColaboradorComponent } from '../nuevo-colaborador/nuevo-colaborador.component';
 import { EliminarComponent } from '../eliminar/eliminar.component';
 import { ModificarComponent } from '../modificar/modificar.component';
-import { SearchSectionComponent } from '../search-section/search-section.component';
 
 interface Colaborador {
     nombre: string;
@@ -19,7 +18,7 @@ interface Colaborador {
 @Component({
     selector: 'app-colaboradores',
     standalone: true,
-    imports: [SearchSectionComponent,ModificarComponent, CommonModule, NuevoColaboradorComponent, EliminarComponent],
+    imports: [ModificarComponent, CommonModule, NuevoColaboradorComponent, EliminarComponent],
     templateUrl: './colaboradores.component.html',
     styleUrls: ['./colaboradores.component.css']
 })
@@ -38,12 +37,6 @@ export class ColaboradoresComponent {
         this.updatePaginatedColaboradores();
     }
 
-    actualizarColaboradores(nuevosColaboradores: Colaborador[]) {
-        this.colaboradores = nuevosColaboradores;
-        this.updatePaginatedColaboradores();
-    }
-    
-    
     get totalPages() {
         return Math.ceil(this.colaboradores.length / this.itemsPerPage);
     }
@@ -71,7 +64,7 @@ export class ColaboradoresComponent {
     pages() {
         return Array.from({ length: this.totalPages }, (_, i) => i + 1);
     }
-
+  
     goToPage(page: number) {
         this.currentPage = page;
         this.updatePaginatedColaboradores();

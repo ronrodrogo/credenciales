@@ -1,24 +1,17 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
-import { environment } from '../environment/environment';
+import { HttpClient } from '@angular/common/http';
 
-
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class GerenciaService {
-    constructor(private _httpClient: HttpClient, ) { }
-   
+  private apiUrl = 'http://localhost:5001/api/gerencia/UploadMassive';
 
-    uploadMissiveLeadership(file: any): Promise<any> {
+  constructor(private http: HttpClient) {}
 
-        const formData = new FormData();
-        formData.append("fileData", file);
-
-        return lastValueFrom(this._httpClient.put(
-            `${environment.apiUrl}/leadership/UploadMassive/`, formData
-        ));
-    }
-
- 
+  uploadMissiveGerencia(file: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('FileData', file);
+    return this.http.post(this.apiUrl, formData).toPromise();
+  }
 }

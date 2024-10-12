@@ -1,24 +1,23 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
-import { environment } from '../environment/environment';
+import { HttpClient } from '@angular/common/http';
 
-
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class SegmentService {
-    constructor(private _httpClient: HttpClient, ) { }
-   
+  private apiUrl = 'https://localhost:5001/api/segment';
 
-    uploadMissiveSegment(file: any): Promise<any> {
+  constructor(private http: HttpClient) {}
 
-        const formData = new FormData();
-        formData.append("fileData", file);
+  uploadMissiveSegment(file: File): Promise<any> {
+    const formData = new FormData();
+    formData.append('FileData', file);
+    return this.http.post(`${this.apiUrl}/UploadMassive`, formData).toPromise();
+  }
 
-        return lastValueFrom(this._httpClient.put(
-            `${environment.apiUrl}/segment/UploadMassive/`, formData
-        ));
-    }
-
- 
+  getAllSegmentPaginated(params: any = {}): Promise<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/paginated`, { params }).toPromise().then(data => {
+      return data || []; 
+    });
+  }
 }

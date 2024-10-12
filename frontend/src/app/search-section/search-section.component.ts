@@ -2,6 +2,8 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CollaboratorService } from '../../services/collaborators.service';
+import { SegmentService } from '../../services/segment.service';
+import { GerenciaService } from '../../services/gerencia.service';
 
 @Component({
   selector: 'app-search-section',
@@ -18,7 +20,11 @@ export class SearchSectionComponent {
   selectedOption: string | null = null; 
   selectedFile: File | null = null;  
 
-  constructor(private collaboratorService: CollaboratorService) {}
+  constructor(
+    private collaboratorService: CollaboratorService,
+    private segmentService: SegmentService,
+    private gerenciaService: GerenciaService
+  ) {}
 
   onSearch() {
     console.log('Buscar:', this.searchQuery);
@@ -39,13 +45,6 @@ export class SearchSectionComponent {
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0]; 
       console.log('Archivo seleccionado:', this.selectedFile.name);
-      
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const fileContent = e.target.result;
-        console.log('Contenido del archivo:', fileContent); 
-      };
-      reader.readAsText(this.selectedFile); 
     } else {
       this.selectedFile = null;
       console.log('No se ha seleccionado ningún archivo.');
@@ -54,7 +53,24 @@ export class SearchSectionComponent {
 
   onLoadExcel() {
     if (this.selectedFile && this.selectedOption) {
-      this.collaboratorService.uploadMissiveCollaborator(this.selectedFile)
+      let uploadPromise;
+      
+      switch (this.selectedOption) {
+        case 'Colaboradores':
+          uploadPromise = this.collaboratorService.uploadMissiveCollaborator(this.selectedFile);
+          break;
+        case 'Segmentos':
+          uploadPromise = this.segmentService.uploadMissiveSegment(this.selectedFile);
+          break;
+        case 'Gerencias':
+          uploadPromise = this.gerenciaService.uploadMissiveGerencia(this.selectedFile);
+          break;
+        default:
+          console.warn('Opción no válida seleccionada.');
+          return;
+      }
+
+      uploadPromise
         .then(response => {
           console.log('Carga exitosa:', response);
         })

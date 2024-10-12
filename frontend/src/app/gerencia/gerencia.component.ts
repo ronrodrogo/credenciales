@@ -80,7 +80,7 @@ export class GerenciasComponent {
     async cargarGerencias() {
         if (this.selectedFile) {
             try {
-                await this.gerenciaService.uploadMissiveLeadership(this.selectedFile);
+                await this.gerenciaService.uploadMissiveGerencia(this.selectedFile);
                 console.log('Gerencias cargadas exitosamente');
             } catch (error) {
                 console.error('Error al cargar gerencias:', error);
