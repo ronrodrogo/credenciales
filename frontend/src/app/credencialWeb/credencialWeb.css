@@ -1,57 +1,164 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    color: #333;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start; /* Alinea el contenido desde el principio de la página */
+    min-height: 100vh; /* Se asegura de que el contenido ocupe al menos la altura de la pantalla */
     margin: 0;
+    padding: 0;
 }
 
 .login-container {
-    max-width: 500px;
+    max-width: 400px;
     width: 100%;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 80px; /* Espacio debajo del header */
+    overflow: hidden;
+    min-height: calc(100vh - 80px); /* Asegura que el contenido ocupe el espacio completo bajo el header */
 }
 
-.login-card {
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
-
+.login-card {
+    padding: 20px;
+}
 .business-card {
-    margin: 20px 0;
+    margin-top: 0;
+    background: url('/Fondo_azul.png') no-repeat center center;
+    background-size: cover;
+    border-radius: 10px;
+    color: #fff;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    align-items: center; /* Alinea el contenido verticalmente */
 }
 
 .card-header {
     display: flex;
+    justify-content: space-between; /* Asegura que la imagen y el texto estén separados */
     align-items: center;
-    margin-bottom: 15px;
+    width: 100%;
+    text-align: left;
 }
 
-.logo-section img {
-    width: 80px;
-    margin-right: 20px;
-}
-
-.contact-info {
+/* Sección de la imagen del lado izquierdo */
+.image-section {
     flex: 1;
 }
 
-.qr-section {
+.repo-image {
+    width: 120px; /* Ajusta el tamaño según lo necesario */
+    height: auto;
+    border-radius: 8px;
+    margin-right: 20px; /* Espacio entre la imagen y el texto */
+}
+
+/* Sección de la información del lado derecho */
+.contact-info {
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+    align-items: flex-start; /* Alinea los elementos al principio (izquierda) */
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.contact-info h3,
+.contact-info p,
+.contact-info span {
+    margin: 5px 0; /* Añade un pequeño espacio entre los elementos */
+}
+
+
+.segmento {
+    background-color: #ffda79;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: inline-block;
     text-align: center;
 }
 
+.position, .direccion {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.office-info {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: -20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+
+.office-info h3 {
+    font-size: 18px;
+    text-align: center;
+    color: #333;
+}
+
+.office-info p {
+    font-size: 14px;
+    color: #333;
+    margin: 5px 0;
+}
+
+.qr-section {
+    display: flex;
+    justify-content: space-evenly; /* Alinea el QR y la imagen de manera uniforme */
+    align-items: center; /* Asegura que estén alineados verticalmente */
+    padding: 10px;
+}
+
+img {
+    width: 200px; /* Establece el mismo tamaño para ambas imágenes */
+    height: 100px;
+}
+
+
 .qr-code {
-    width: 150px;
-    height: 150px;
-    margin-top: 10px;
+    width: 100px;
+    height: 100px;
 }
 
 .footer {
     text-align: center;
     font-size: 0.9em;
     color: #777;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+.divider {
+    border-bottom: 1px solid rgb(224, 213, 213); /* Línea más gruesa */
+    margin: 10px 0; /* Espacio antes y después del divisor */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+}
+
+p, h3{
+    font-family: "Open Sans", sans-serif;
+
+}
+
+h2{
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 300;
+    font-size: medium;
+    margin-top: 40px;
 }

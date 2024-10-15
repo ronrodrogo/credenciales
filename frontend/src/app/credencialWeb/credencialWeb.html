@@ -1,33 +1,49 @@
 <div class="login-container">
   <div class="login-card">
-    <h2>¡Hola! Esta es mi Identificación Oficial...</h2>
+    <h2><strong>¡Hola!</strong> Esta es mi Identificación Oficial...</h2>
 
     <div class="business-card">
       <div class="card-header">
-        <div class="logo-section">
-          <img src="/Logos DDC-04.svg" alt="Logo DDC" class="logo">
+        <!-- Imagen del lado izquierdo -->
+        <div class="image-section">
+          <img src="/user-2935527_1920.png" alt="Imagen del repositorio" class="repo-image">
         </div>
+        <!-- Información del lado derecho -->
         <div class="contact-info">
           <h3 class="name">{{ nombre }}</h3>
           <span class="segmento">{{ segmento }}</span>
           <p class="position">{{ cargo }}</p>
           <p class="direccion">{{ sede }}</p>
+          <hr class="divider">
+
+          <p>David del Curto</p>
+          <p>Avenida Las Condes 11700</p>
         </div>
       </div>
+    </div>
+    
+    <div class="office-info">
+      <h3>Mis Datos</h3>
+      <hr class="divider">
 
-      <div class="office-info">
-        <h3>Mis Datos</h3>
-        <p class="contact-info">Contacto Telefónico: <a href="tel:+{{ celular }}">{{ celular }}</a></p>
-        <p class="email-info">Correo electrónico: <a href="mailto:{{ correo }}">{{ correo }}</a></p>
-      </div>
+      <p class="name">{{ nombre }}</p>
+      <hr class="divider">
+
+      <p class="contact-info">Contacto Telefónico: <a href="tel:+{{ celular }}">{{ celular }}</a></p>
+      <hr class="divider">
+
+      <p class="email-info">Correo electrónico: <a href="mailto:{{ correo }}">{{ correo }}</a></p>
+      <hr class="divider">
+
       <div class="qr-section">
-        <h3>QR Code:</h3>
         <img [src]="qrCodeUrl" alt="Código QR" class="qr-code">
-      </div>
+        <img src="/logos.png" alt="Logo adicional">
+    </div>
+    
     </div>
 
+
     <div class="footer">
-      <p>En DDC estamos comprometidos con el cuidado del planeta y sus recursos. Por favor no imprima este correo si no es necesario.</p>
     </div>
   </div>
 </div>

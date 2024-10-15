@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-credencialWeb',
@@ -15,6 +17,8 @@ export class CredencialWebComponent implements OnInit {
   qrCodeUrl: string = '';
   segmento: string = '';
 
+  constructor(private sanitizer: DomSanitizer) {}
+
   ngOnInit() {
     this.inicializarDatos();
   }
@@ -29,12 +33,31 @@ export class CredencialWebComponent implements OnInit {
         this.correo = data.correo;
         this.celular = data.celular;
         this.sede = data.sede;
-        this.qrCodeUrl = data.qrCodeUrl;
+        
+        // Generar QR con formato MECARD
+        const mecardData = this.generarMecard(data);
+        this.generarQRCode(mecardData);
       } else {
         console.error('No se encontraron datos de colaborador en localStorage');
       }
     } else {
       console.error('localStorage no está disponible');
     }
+  }
+
+  generarMecard(data: any): string {
+    // Construye la cadena MECARD con los datos del colaborador
+    return `MECARD:N:${data.nombre};TEL:${data.celular};EMAIL:${data.correo};ADR:${data.sede};;`;
+  }
+
+  generarQRCode(mecardData: string) {
+    // Generar el QR a partir de la cadena MECARD
+    QRCode.toDataURL(mecardData, { errorCorrectionLevel: 'H' }, (err, url) => {
+      if (err) {
+        console.error(err);
+      } else {
+        this.qrCodeUrl = this.sanitizer.bypassSecurityTrustUrl(url) as string;
+      }
+    });
   }
 }
