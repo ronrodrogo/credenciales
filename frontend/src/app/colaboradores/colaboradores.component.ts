@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { NuevoColaboradorComponent } from '../nuevo-colaborador/nuevo-colaborador.component';
 import { EliminarComponent } from '../eliminar/eliminar.component';
 import { ModificarComponent } from '../modificar/modificar.component';
-
+import { Router } from '@angular/router';
+import { CollaboratorService } from '../../services/collaborators.service';
 interface Colaborador {
     nombre: string;
     rut: string;
@@ -33,7 +34,7 @@ export class ColaboradoresComponent {
     mostrarModificar: boolean = false; 
     mostrarModalEliminar: boolean = false; 
 
-    constructor() {
+    constructor(private CollaboratorService: CollaboratorService, private router: Router) {
         this.updatePaginatedColaboradores();
     }
 
@@ -93,5 +94,11 @@ export class ColaboradoresComponent {
         this.selectedColaborador = colaborador; 
         this.mostrarFormulario = false; 
         this.mostrarModificar = true; 
+    }
+
+    onReimprimir(colaborador: Colaborador) {
+        // Guardar el colaborador en el servicio y navegar a la pantalla de "Generar Credencial"
+        this.CollaboratorService.setColaborador(colaborador);
+        this.router.navigate(['/generar']); // Navega a la ruta donde está el componente "Generar Credencial"
     }
 }

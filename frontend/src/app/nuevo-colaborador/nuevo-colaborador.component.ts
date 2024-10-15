@@ -29,6 +29,11 @@ export class NuevoColaboradorComponent {
   constructor() {}
 
   async guardarDatos() {
+    if (!this.nombre || !this.celular || !this.correo) {
+      alert('Por favor, rellena los campos obligatorios.');
+      return;
+    }
+  
     const userData = {
       nombre: this.nombre,
       rut: this.rut,
@@ -41,31 +46,36 @@ export class NuevoColaboradorComponent {
       foto: this.foto
     };
   
+    console.log('Datos del usuario para el QR:', userData);
+  
     this.generateQRCode(userData); 
     this.generarCredencial.emit(userData);
-    this.cerrar.emit(); 
   }
-
+  
   generateQRCode(data: any) {
     const vCard = `
-      BEGIN:VCARD
-      VERSION:3.0
-      N:${data.nombre}
-      FN:${data.nombre}
-      EMAIL:${data.correo}
-      TEL;TYPE=CELL:${data.celular}
-      END:VCARD`;
-
+  BEGIN:VCARD
+  VERSION:3.0
+  N:${data.nombre};;;;
+  FN:${data.nombre}
+  TEL;TYPE=CELL:${data.celular}
+  EMAIL:${data.correo}
+  END:VCARD
+    `.trim();
+  
+    console.log('vCard generado:', vCard);
+  
     QRCode.toDataURL(vCard)
       .then(url => {
-        this.qrCodeUrl = url; 
-        console.log('QR Code generado:', this.qrCodeUrl);
+        this.qrCodeUrl = url;
+        console.log('QR Code generado con vCard:', this.qrCodeUrl);
       })
       .catch(err => {
         console.error('Error generando QR Code:', err);
       });
   }
-
+    
+  
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {

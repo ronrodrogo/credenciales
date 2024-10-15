@@ -19,6 +19,7 @@ export class SearchSectionComponent {
   isDropdownVisible: boolean = false; 
   selectedOption: string | null = null; 
   selectedFile: File | null = null;  
+  mostrarMensajeExito: boolean = false;
 
   constructor(
     private collaboratorService: CollaboratorService,
@@ -54,7 +55,7 @@ export class SearchSectionComponent {
   onLoadExcel() {
     if (this.selectedFile && this.selectedOption) {
       let uploadPromise;
-      
+
       switch (this.selectedOption) {
         case 'Colaboradores':
           uploadPromise = this.collaboratorService.uploadMissiveCollaborator(this.selectedFile);
@@ -73,6 +74,8 @@ export class SearchSectionComponent {
       uploadPromise
         .then(response => {
           console.log('Carga exitosa:', response);
+          this.mostrarMensajeExito = true; // Mostrar el mensaje de éxito
+          setTimeout(() => this.mostrarMensajeExito = false, 3000); // Ocultar el mensaje después de 3 segundos
         })
         .catch(error => {
           console.error('Error en la carga:', error);
@@ -81,4 +84,5 @@ export class SearchSectionComponent {
       console.warn('Por favor, selecciona un archivo y una opción.');
     }
   }
+
 }

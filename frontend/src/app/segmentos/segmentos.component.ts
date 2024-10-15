@@ -29,7 +29,7 @@ export class SegmentosComponent {
     mostrarFormulario: boolean = false;
 
     constructor(private segmentService: SegmentService) {
-        this.updateSegmentos(); // Cargar segmentos al iniciar el componente
+        this.updateSegmentos();
     }
 
     

@@ -63,6 +63,12 @@
         <button class="btn-secondary-1" (click)="cerrar.emit()">Atrás</button>
       </div>
     </form>
+
+    <div *ngIf="qrCodeUrl" class="qr-code-container">
+      <h3>Código QR generado:</h3>
+      <img [src]="qrCodeUrl" alt="Código QR">
+    </div>
+    
   </div>
 </div>
   
