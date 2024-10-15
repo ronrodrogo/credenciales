@@ -9,6 +9,8 @@ import { DescargarCredencialComponent } from './descargar-credencial/descargar-c
 import { GenerarFirmaComponent } from './generar-firma/generar-firma.component';
 import { FirmaExitosaComponent } from './firma-exitosa/firma-exitosa.component';
 import { CredencialExitosaComponent } from './credencial-exitosa/credencial-exitosa.component';
+import { CredencialWebComponent } from './credencialWeb/credencialWeb';
+
 export const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'home', component: HomeComponent},
@@ -20,5 +22,6 @@ export const routes: Routes = [
     {path: 'generarfirma', component: GenerarFirmaComponent},
     {path:'firmaexitosa', component:FirmaExitosaComponent},
     {path:'credencialexitosa', component:CredencialExitosaComponent},
+    {path:'credencialweb', component:CredencialWebComponent},
 
 ];

@@ -1,23 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { CollaboratorService } from '../../services/collaborators.service';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-firma-exitosa',
+  selector: 'app-credencialWeb',
   standalone: true,
-  templateUrl: './firma-exitosa.component.html',
-  styleUrls: ['./firma-exitosa.component.css'],
-  imports: [FormsModule, CommonModule]
+  templateUrl: './credencialWeb.html',
+  styleUrls: ['./credencialWeb.css'],
 })
-export class FirmaExitosaComponent implements OnInit {
+export class CredencialWebComponent implements OnInit {
   nombre: string = '';
   cargo: string = '';
   correo: string = '';
   celular: string = '';
+  sede: string = '';
   qrCodeUrl: string = '';
-
-  constructor(private colaboradoresService: CollaboratorService) {}
+  segmento: string = '';
 
   ngOnInit() {
     this.inicializarDatos();
@@ -32,6 +28,7 @@ export class FirmaExitosaComponent implements OnInit {
         this.cargo = data.cargo;
         this.correo = data.correo;
         this.celular = data.celular;
+        this.sede = data.sede;
         this.qrCodeUrl = data.qrCodeUrl;
       } else {
         console.error('No se encontraron datos de colaborador en localStorage');

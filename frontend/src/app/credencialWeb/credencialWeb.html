@@ -1,0 +1,33 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>¡Hola! Esta es mi Identificación Oficial...</h2>
+
+    <div class="business-card">
+      <div class="card-header">
+        <div class="logo-section">
+          <img src="/Logos DDC-04.svg" alt="Logo DDC" class="logo">
+        </div>
+        <div class="contact-info">
+          <h3 class="name">{{ nombre }}</h3>
+          <span class="segmento">{{ segmento }}</span>
+          <p class="position">{{ cargo }}</p>
+          <p class="direccion">{{ sede }}</p>
+        </div>
+      </div>
+
+      <div class="office-info">
+        <h3>Mis Datos</h3>
+        <p class="contact-info">Contacto Telefónico: <a href="tel:+{{ celular }}">{{ celular }}</a></p>
+        <p class="email-info">Correo electrónico: <a href="mailto:{{ correo }}">{{ correo }}</a></p>
+      </div>
+      <div class="qr-section">
+        <h3>QR Code:</h3>
+        <img [src]="qrCodeUrl" alt="Código QR" class="qr-code">
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>En DDC estamos comprometidos con el cuidado del planeta y sus recursos. Por favor no imprima este correo si no es necesario.</p>
+    </div>
+  </div>
+</div>

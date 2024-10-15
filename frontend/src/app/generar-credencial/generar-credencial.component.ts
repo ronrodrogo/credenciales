@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import QRCode from 'qrcode';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-generar-credencial',
@@ -19,14 +20,22 @@ export class GenerarCredencialComponent {
   celular: string = '';
   correo: string = '';
   sede: string = '';
-  adjuntaFirma: boolean = false;
-  adjuntaCredencial: boolean = false;
   foto: File | null = null;
   qrCodeUrl: string | undefined;
 
   @Output() cerrar = new EventEmitter<void>();
 
-  guardarDatos() {
+  // IP local del servidor Angular
+  private ipLocal: string = '192.168.3.102'; // Cambia esto a la IP correcta si es necesario
+
+  constructor(private router: Router) {}
+
+  async guardarDatos() {
+    if (!this.nombre || !this.cargo || !this.correo) {
+      alert('Por favor, rellena los campos obligatorios.');
+      return;
+    }
+
     const userData = {
       nombre: this.nombre,
       rut: this.rut,
@@ -36,20 +45,23 @@ export class GenerarCredencialComponent {
       celular: this.celular,
       correo: this.correo,
       sede: this.sede,
-      adjuntaFirma: this.adjuntaFirma,
-      adjuntaCredencial: this.adjuntaCredencial,
-      foto: this.foto
+      foto: this.foto,
     };
 
-    console.log(userData);
-    this.generateQRCode(); 
-    this.cerrar.emit();
+    // Generar QR y guardar datos en localStorage
+    await this.generateQRCode();
+    localStorage.setItem('colaboradorData', JSON.stringify({ ...userData, qrCodeUrl: this.qrCodeUrl }));
+
+    // Redirigir al componente de firma exitosa
+    this.router.navigate(['/firmaexitosa']);
   }
 
   async generateQRCode() {
-    const contactInfo = `BEGIN:VCARD\nFN:${this.nombre}\nTEL:${this.celular}\nEMAIL:${this.correo}\nEND:VCARD`;
+    // URL que se utilizará para redirigir al escanear el QR
+    const url = `http://${this.ipLocal}:4200/credencialweb`;
+
     try {
-      this.qrCodeUrl = await QRCode.toDataURL(contactInfo);
+      this.qrCodeUrl = await QRCode.toDataURL(url);
       console.log('QR Code generado:', this.qrCodeUrl);
     } catch (err) {
       console.error('Error generando QR Code:', err);

@@ -23,7 +23,7 @@ export class SegmentosComponent {
     mostrarFormulario: boolean = false;
 
     constructor(private segmentService: SegmentService) {
-        this.updateSegmentos(); 
+        this.updateSegmentos();
     }
 
     updateSegmentos() {

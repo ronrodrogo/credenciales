@@ -20,4 +20,18 @@ export class CollaboratorService {
   getCollaborators(): Promise<any> {
     return lastValueFrom(this._httpClient.get('https://localhost:5001/api/collaborators'));
   }
+
+
+  private colaborador: any;
+  setColaborador(colaborador: any) {
+    this.colaborador = colaborador;
+  }
+
+  getColaborador() {
+    return this.colaborador;
+  }
+
+  clearColaborador() {
+    this.colaborador = null;
+  }
 }
