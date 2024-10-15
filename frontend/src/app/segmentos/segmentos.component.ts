@@ -4,16 +4,10 @@ import { SegmentService } from '../../services/segment.service';
 import { EliminarComponent } from '../eliminar/eliminar.component';
 
 interface Segmento {
-    nombreCompleto: string;
-    rut: string;
-    gerencia: string;
-    sede: string;
-    cargo: string;
-    celular: string;
-    correoElectronico: string;
-    segmento: string;
-    nombreFoto: string;
-    tipoColaborador: string;
+    nombreCompleto: string; 
+    color: string;         
+    id: number;            
+    activo: boolean;       
 }
 
 @Component({
@@ -29,10 +23,9 @@ export class SegmentosComponent {
     mostrarFormulario: boolean = false;
 
     constructor(private segmentService: SegmentService) {
-        this.updateSegmentos(); // Cargar segmentos al iniciar el componente
+        this.updateSegmentos(); 
     }
 
-    
     updateSegmentos() {
         const params = {
             RequireTotalCount: true,
@@ -40,12 +33,22 @@ export class SegmentosComponent {
             Take: 10,
         };
     
-        this.segmentService.getAllSegmentPaginated(params).then(data => {
-            this.segmentos = data; // Actualiza la lista de segmentos
-            console.log('Segmentos obtenidos:', this.segmentos); // Asegúrate de que los datos se estén recibiendo
+        this.segmentService.getAllSegmentPaginated(params).then((response: any) => {
+            if (response && response.content && response.content.data) {
+                this.segmentos = response.content.data.map((item: any) => ({
+                    nombreCompleto: item.name,
+                    color: item.color,
+                    id: item.id,
+                    activo: item.active
+                }));
+                console.log('Segmentos obtenidos:', this.segmentos); 
+            } else {
+                console.error('Se esperaba un objeto con propiedad "content", pero se recibió:', response);
+                this.segmentos = []; 
+            }
         }).catch(error => {
             console.error('Error al obtener segmentos:', error);
-            alert('Error al obtener segmentos: ' + error.message); // Muestra el mensaje de error
+            alert('Error al obtener segmentos: ' + error.message); 
         });
     }
     
@@ -55,7 +58,7 @@ export class SegmentosComponent {
             try {
                 await this.segmentService.uploadMissiveSegment(this.selectedFile);
                 console.log('Segmentos cargados exitosamente');
-                this.updateSegmentos(); // Actualiza los segmentos después de la carga
+                this.updateSegmentos(); 
             } catch (error) {
                 console.error('Error al cargar segmentos:', error);
                 alert('Error al cargar segmentos. Intenta nuevamente.');

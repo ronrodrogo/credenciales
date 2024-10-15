@@ -1,16 +1,17 @@
+<body>
 <div class="table-container">
     <div class="toolbar">
         <h1 class="title">Mantenedores / </h1>
-        <h1 class="title" style="color: grey;">Áreas</h1>
+        <h1 class="title" style="color: grey;">Segmentos</h1>
 
         <button class="btn btn-primary" (click)="cargarSegmentos()">
             <input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput />
-            <span (click)="fileInput.click()">Cargar Áreas</span>
+            <span (click)="fileInput.click()">Cargar Segmento</span>
         </button>
 
         <button class="btn btn-primary">
             <img src="/icons/crear.svg" class="option-icon" style="margin-right: 10px;">
-            <span>Nueva Área</span>
+            <span>Nuevo Segmento</span>
         </button>
     </div>
 
@@ -20,36 +21,25 @@
                 <tr>
                     <th><input type="checkbox"></th>
                     <th>Nombre Completo</th>
-                    <th>RUT</th>
-                    <th>Gerencia</th>
-                    <th>Sede</th>
-                    <th>Cargo</th>
-                    <th>Celular</th>
-                    <th>Correo Electrónico</th>
-                    <th>Segmento</th>
-                    <th>Nombre Foto</th>
-                    <th>Tipo Colaborador</th>
-                    <th>Acciones</th>
+                    <th>Id</th>
+                    <th>Color</th>
+                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let segmento of segmentos">
                     <td><input type="checkbox"></td>
                     <td>{{ segmento.nombreCompleto }}</td>
-                    <td>{{ segmento.rut }}</td>
-                    <td>{{ segmento.gerencia }}</td>
-                    <td>{{ segmento.sede }}</td>
-                    <td>{{ segmento.cargo }}</td>
-                    <td>{{ segmento.celular }}</td>
-                    <td>{{ segmento.correoElectronico }}</td>
-                    <td>{{ segmento.segmento }}</td>
-                    <td>{{ segmento.nombreFoto }}</td>
-                    <td>{{ segmento.tipoColaborador }}</td>
+                    <td>{{ segmento.id }}</td> 
+                    <td>{{ segmento.color }}</td> 
+                    <td>{{ segmento.activo ? 'Activo' : 'Inactivo' }}</td> 
                     <td>
                         <button class="btn-edit">...</button>
                     </td>
                 </tr>
             </tbody>
+            
         </table>  
     </div>
 </div>
+</body>
