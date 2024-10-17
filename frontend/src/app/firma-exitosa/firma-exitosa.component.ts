@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CollaboratorService } from '../../services/collaborators.service';
+import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { CollaboratorService } from '../../services/collaborators.service';
 
 @Component({
   selector: 'app-firma-exitosa',
@@ -17,27 +18,44 @@ export class FirmaExitosaComponent implements OnInit {
   celular: string = '';
   qrCodeUrl: string = '';
 
-  constructor(private colaboradoresService: CollaboratorService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private colaboradoresService: CollaboratorService
+  ) {}
 
   ngOnInit() {
-    this.inicializarDatos();
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      this.cargarDatosColaborador(id);
+    });
   }
 
-  inicializarDatos() {
-    if (typeof window !== 'undefined' && localStorage) {
-      const colaborador = localStorage.getItem('colaboradorData');
-      if (colaborador) {
-        const data = JSON.parse(colaborador);
-        this.nombre = data.nombre;
-        this.cargo = data.cargo;
-        this.correo = data.correo;
-        this.celular = data.celular;
-        this.qrCodeUrl = data.qrCodeUrl;
-      } else {
-        console.error('No se encontraron datos de colaborador en localStorage');
-      }
-    } else {
-      console.error('localStorage no está disponible');
-    }
+  cargarDatosColaborador(id: number) {
+    this.colaboradoresService.getCollaboratorById(id)
+      .then(response => {
+        console.log('Respuesta de la API:', response);
+        const colaborador = response.content;
+        
+        // Asigna los datos a las variables del componente
+        this.nombre = colaborador.completeName || 'Nombre no disponible';
+        this.cargo = colaborador.position || 'Cargo no disponible';
+        this.correo = colaborador.email || 'Correo no disponible';
+        this.celular = colaborador.phone || 'Celular no disponible';
+        
+        // Asigna el código QR desde la API o revisa si no está presente
+        this.qrCodeUrl = colaborador.qrCodeUrl || '';
+        
+        // Si no existe el QR Code en la respuesta de la API, búscalo en el localStorage
+        if (!this.qrCodeUrl) {
+          const colaboradorData = localStorage.getItem('colaboradorData');
+          if (colaboradorData) {
+            const storedData = JSON.parse(colaboradorData);
+            this.qrCodeUrl = storedData.qrCodeUrl || ''; // Usa el QR almacenado en el localStorage
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error al cargar los datos del colaborador:', error);
+      });
   }
 }
