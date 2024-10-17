@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;600;700&display=swap');
 
 body {
   height: 100vh;
@@ -45,6 +45,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  position: relative; /* Para posicionar el footer */
 }
 
 .front-card, .back-card {
@@ -62,66 +63,94 @@ body {
 
 .logo-section {
   text-align: center;
-  margin-top: 50px; 
+  margin-top: 65px; 
 }
 
 .logo {
-  width: 50px; 
+  width: 70px; 
   height: auto; 
   transform: scale(5); 
 }
 
 .info-section {
+  display: flex;
+  justify-content: space-between; /* Alinea el texto a la izquierda y el QR a la derecha */
   padding: 20px;
-  text-align: center;
+  align-items: center; /* Centra verticalmente el contenido */
+}
+
+.text-container {
+  text-align: left; /* Alinea todo el texto a la izquierda */
+}
+
+.qr-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .profile-picture {
-  width: 80px;
-  height: 80px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
-  margin-bottom: 15px;
+  margin-top: -10px;
+  margin-bottom: -15px;
+  margin-left: 25px;
 }
 
 .name {
-  font-size: 18px;
+  font-size: xx-large;
   font-weight: bold;
   color: white;
+  margin-bottom: -5px;
 }
 
-.position, .department, .hashtag, .website {
+.position, .department, .hashtag1, .website {
   color: white;
+  margin-bottom: -25px; /* Añadir espacio entre los elementos */
+}
+
+.website {
+  text-decoration: none;
+  color: white;
+  margin-bottom: 5px;
+  
 }
 
 .qr-code {
   width: 80px;
   height: 80px;
-  margin: 15px auto;
+  margin-top: 150px;
 }
 
 .footer-section {
   background-color: #1abc9c;
   text-align: center;
-  padding: 10px 0;
+  padding: 8px 0; /* Reduce el padding para hacer el footer más pequeño */
+  position: absolute; /* Posiciona el footer al fondo de la tarjeta */
+  bottom: 0; /* Asegura que esté al fondo */
+  width: 100%; /* Hace el footer menos ancho */
 }
 
 .footer-text {
   color: white;
   font-size: 14px;
+  text-align: center;
+  font-size: medium;
+
 }
 
 .back-card .footer-section {
-    background-color: transparent; 
-    text-align: center;
-    padding: 10px 0;
-    
-  }
-  
-  .back-card .footer-text {
-    color: blue; 
-    font-size: 14px;
-  }
-  
+  background-color: transparent; 
+  text-align: center;
+  padding: 10px 0;
+}
+
+.back-card .footer-text {
+  color: blue; 
+  font-size: 14px;
+}
 
 .button {
   display: flex;
@@ -144,4 +173,89 @@ body {
   border: 2px solid #005bb5;
   padding: 8px 16px;
   cursor: pointer;
+}
+.commitment-section {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  margin-left: 20px;
+}
+ 
+.commitment-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(0, 56, 120);
+  margin-bottom: -25px;
+
+}
+
+.hashtag {
+  font-size: large;
+  color:rgb(0, 56, 120);
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Estilos para el footer en la back card */
+.back-card .footer-section {
+  background-color: white;
+  text-align: center;
+  padding: 8px 0; /* Reduce el padding para hacer el footer más pequeño */
+  position: absolute; /* Posiciona el footer al fondo de la tarjeta */
+  bottom: 0; /* Asegura que esté al fondo */
+  width: 100%; /* Hace el footer menos ancho */
+  
+}
+
+.back-card .footer-text {
+  font-size: 12px;
+  color:rgb(0, 56, 120);
+  text-align: left;
+  font-weight: 500;
+  
+
+
+} 
+.info-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: -5px;
+}
+
+.info-container > * {
+  margin-bottom: -10px; /* Ajusta este valor para reducir el espacio */
+  margin-left: 25px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin-left: 25px;
+
+}
+
+.position, .department {
+  color: white;
+  margin-top: 5px;
+}
+.footer-links {
+  display: flex;
+  flex-direction: column; /* Coloca los elementos en una columna */
+  justify-content: flex-end; /* Alinea los elementos hacia el final del contenedor */
+  text-align: left; /* Centra el texto */
+  margin-top: 20px;
+  margin-left: 25px;
+
+}
+
+.hashtag1, .website {
+  margin: 0; /* Elimina los márgenes predeterminados para que queden más pegados entre sí */
+}
+
+
+.website {
+  text-decoration: none;
+  color: white; /* O el color que prefieras */
 }
