@@ -1,28 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { environment } from '../environment/environment'; 
 
 @Injectable({ providedIn: 'root' })
 export class CollaboratorService {
+  private apiUrl = 'http://localhost:5002/api/collaborators';  // Cambiar la ruta base a "/api/collaborators"
+
   constructor(private _httpClient: HttpClient) {}
 
   uploadMissiveCollaborator(file: File): Promise<any> {
     const formData = new FormData();
-    formData.append('fileData', file);
+    formData.append('fileData', file);  // Asegúrate de que el nombre del archivo coincida con lo que espera el backend
 
-    return lastValueFrom(this._httpClient.post(`${environment.apiUrl}collaborators/UploadMassive`, formData));
-}
-
-  
-  
-
-  getCollaborators(): Promise<any> {
-    return lastValueFrom(this._httpClient.get('https://localhost:5001/api/collaborators'));
+    return lastValueFrom(this._httpClient.post(`${this.apiUrl}/UploadMassive`, formData));
   }
 
+  getPaginatedCollaborators(page: number, pageSize: number): Promise<any> {
+    const params = { page: page.toString(), pageSize: pageSize.toString() };
+    return lastValueFrom(this._httpClient.get(`${this.apiUrl}/paginated`, { params }));  // Aquí usamos "/paginated" para obtener colaboradores
+  }
 
+  deleteCollaborator(id: number): Promise<any> {
+    return lastValueFrom(this._httpClient.delete(`${this.apiUrl}/${id}`));  // Aquí usamos "/api/collaborators/{id}" para eliminar
+  }
+
+  // Gestión del estado del colaborador
   private colaborador: any;
+
   setColaborador(colaborador: any) {
     this.colaborador = colaborador;
   }
@@ -34,4 +38,57 @@ export class CollaboratorService {
   clearColaborador() {
     this.colaborador = null;
   }
+  createCollaborator(colaborador: any): Promise<any> {
+    const formData = new FormData();
+    formData.append('CompleteName', colaborador.CompleteName);
+    formData.append('RUT', colaborador.RUT);
+    formData.append('LeadershipId', colaborador.LeadershipId.toString());
+    formData.append('SegmentId', colaborador.SegmentId.toString());
+    formData.append('Position', colaborador.Position);
+    formData.append('Sede', colaborador.Sede);
+    formData.append('Phone', colaborador.Phone);
+    formData.append('Email', colaborador.Email);
+    formData.append('ECollaboratorStatus', colaborador.ECollaboratorStatus.toString());
+  
+    if (colaborador.Photo) {
+      formData.append('Photo', colaborador.Photo);
+    }
+  
+    return lastValueFrom(this._httpClient.post(`${this.apiUrl}`, formData));
+  }
+
+  updateCollaborator(id: number, colaborador: any): Promise<any> {
+    const payload = {
+      Id: id,  // Incluir el ID en el cuerpo del comando también
+      CompleteName: colaborador.CompleteName,
+      LeadershipId: colaborador.LeadershipId,
+      SegmentId: colaborador.SegmentId,
+      Position: colaborador.Position,
+      Sede: colaborador.Sede || "Sin Sede",  // Valor predeterminado si está vacío
+      Phone: colaborador.Phone,
+      Email: colaborador.Email,
+      ECollaboratorStatus: colaborador.ECollaboratorStatus,
+    };
+  
+    return lastValueFrom(this._httpClient.put(`${this.apiUrl}/${id}`, payload));
+  }
+  getCollaboratorById(id: number): Promise<any> {
+    return lastValueFrom(this._httpClient.get(`${this.apiUrl}/${id}`))
+      .then(response => {
+        console.log('Datos recibidos del colaborador:', response);  // Verificar los datos recibidos
+        return response;
+      })
+      .catch(error => {
+        console.error('Error al obtener colaborador:', error);
+        throw error;
+      });
+  }
+  
 }
+  
+  
+  
+  
+  
+  
+
