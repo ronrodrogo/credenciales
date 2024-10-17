@@ -87,28 +87,30 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: -20px;
 }
 
 .profile-picture {
-  width: 65px;
-  height: 65px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
-  margin-top: -10px;
-  margin-bottom: -15px;
+  margin-top: 10px;
+  margin-bottom: -5px;
   margin-left: 25px;
 }
 
 .name {
-  font-size: xx-large;
+  font-size: small;
   font-weight: bold;
   color: white;
   margin-bottom: -5px;
+  white-space: nowrap
 }
 
 .position, .department, .hashtag1, .website {
   color: white;
   margin-bottom: -25px; /* Añadir espacio entre los elementos */
+  white-space: nowrap;
 }
 
 .website {
@@ -122,6 +124,7 @@ body {
   width: 80px;
   height: 80px;
   margin-top: 150px;
+  margin-left: -800px;
 }
 
 .footer-section {
@@ -131,13 +134,15 @@ body {
   position: absolute; /* Posiciona el footer al fondo de la tarjeta */
   bottom: 0; /* Asegura que esté al fondo */
   width: 100%; /* Hace el footer menos ancho */
+  
 }
 
 .footer-text {
   color: white;
-  font-size: 14px;
+  font-size: 6px;
   text-align: center;
   font-size: medium;
+  margin-bottom: 20px;
 
 }
 
@@ -148,8 +153,9 @@ body {
 }
 
 .back-card .footer-text {
-  color: blue; 
+  color: rgb(0,61,165); 
   font-size: 14px;
+  font-weight: 500;
 }
 
 .button {
@@ -191,7 +197,7 @@ body {
 
 .hashtag {
   font-size: large;
-  color:rgb(0, 56, 120);
+  color: rgb(0,61,165); 
   text-align: center;
   font-weight: 600;
   margin-bottom: 10px;
@@ -210,7 +216,7 @@ body {
 
 .back-card .footer-text {
   font-size: 12px;
-  color:rgb(0, 56, 120);
+  color: rgb(0,61,165); 
   text-align: left;
   font-weight: 500;
   
