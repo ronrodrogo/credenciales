@@ -25,6 +25,7 @@ export class SegmentosComponent {
   segmentos: Segmento[] = []; 
   paginatedSegmentos: Segmento[] = []; 
   itemsPerPage = 7; 
+  currentPage = 1;
   totalPages = 1;  
   mostrarModalNuevoSegmento: boolean = false;  
   mostrarModalEliminar: boolean = false;
